@@ -1,0 +1,121 @@
+/* ==========================================================================
+   Design tokens — "Observatory" system
+   Reference these variables everywhere. Don't hardcode raw values in
+   component/page CSS files — if a value isn't here, it probably should be.
+   ========================================================================== */
+
+:root {
+
+  /* ---- Color: backgrounds ---- */
+  --bg-base: #0B0D16;          /* page background — near-black navy, not flat */
+  --bg-void-deep: #070810;     /* deepest point in radial vignette / glow gradients */
+  --surface-plate: #12151F;    /* instrument plates — projects, panels */
+  --surface-plate-raised: #171B27; /* top-of-gradient tone for plate surfaces */
+
+  /* ---- Color: borders / dividers ----
+     Hairlines are brass-tinted at low opacity, not a flat neutral gray —
+     ties every divider back to the instrument-panel material. */
+  --border-hairline: rgba(201, 162, 106, 0.18);
+  --border-hairline-strong: rgba(201, 162, 106, 0.4); /* hover / active state */
+
+  /* ---- Color: text ---- */
+  --text-primary: #ECE7DC;    /* warm off-white, not pure white — matches brass warmth */
+  --text-muted: #9A9788;
+  --text-faint: #605E56;      /* meta text, serials, icons at rest */
+
+  /* ---- Color: accents (each tied to a specific meaning — don't mix) ----
+     Only three accents now. Ember and teal each carry a motion language
+     (beacon / signal); brass is structural chrome and stays static. */
+  --accent-ember: #F2703C;    /* TriageRL — "beacon": single steady pulse, urgency */
+  --accent-teal: #2FBFA8;     /* Afroglot — "signal": rhythmic double-pulse, transmission.
+                                  Also used for About's name-pronunciation ripple. */
+  --accent-brass: #C9A26A;    /* structural chrome — rivets, hairlines, serial labels.
+                                  Never animated — it's the panel, not the signal. */
+  --accent-brass-dim: #8A7350; /* rivets, secondary brass detail */
+
+  /* ---- Color: accent glows (rgba strings for box-shadow use) ---- */
+  --glow-ember-tight: rgba(242, 112, 60, 0.15);
+  --glow-ember-wide: rgba(242, 112, 60, 0.08);
+  --glow-teal-tight: rgba(47, 191, 168, 0.15);
+  --glow-teal-wide: rgba(47, 191, 168, 0.08);
+  --glow-shadow-base: rgba(0, 0, 0, 0.3);
+
+  /* ---- Spacing scale (unchanged — use these, don't invent one-offs) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-7: 64px;
+  --space-8: 96px;
+
+  /* ---- Section rhythm (unchanged) ---- */
+  --section-padding-desktop: var(--space-8);
+  --section-padding-mobile: var(--space-7);
+  --content-max-width: 720px;
+
+  /* ---- Typography: families ---- */
+  --font-display: 'Fraunces', serif;  /* headlines, plate titles, section heads */
+  --font-body: 'Karla', sans-serif;   /* body copy, nav, labels, meta */
+
+  /* ---- Typography: sizes (unchanged from the locked Home pass) ---- */
+  --text-hero-desktop: 52px;
+  --text-hero-mobile: 32px;
+  --text-h2: 12px;             /* meta/serial labels — sentence case, NOT uppercase */
+  --text-h3: 22px;             /* plate titles, name */
+  --text-h3-large: 28px;       /* About page name — bumped anchor size */
+  --text-body: 16px;
+  --text-small: 14px;
+  --text-meta: 11px;
+
+  /* ---- Typography: weights ---- */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-display: 450;       /* Fraunces' optical-size-friendly default weight —
+                                   doesn't map cleanly to the 400/500/600 scale above */
+
+  /* ---- Typography: line-height (unchanged) ---- */
+  --leading-tight: 1.25;
+  --leading-body: 1.6;
+
+  /* ---- Typography: letter-spacing ----
+     No longer paired with uppercase — used sparingly on sentence-case
+     meta labels (e.g. plate serials) for a touch of precision, not shouting. */
+  --tracking-label: 0.04em;
+
+  /* ---- Radius ----
+     Plates are flat — instrument panels don't have rounded corners.
+     Small radius reserved for actual interactive controls only. */
+  --radius-plate: 0;
+  --radius-control: 2px;
+
+  /* ---- Motion: general ---- */
+  --ease-out: ease-out;
+  --duration-hover: 200ms;
+  --duration-glow: 250ms;
+  --duration-ripple: 400ms;    /* About page ripple — signal-teal */
+
+  /* ---- Motion: flagship signal marks ----
+     Distinct rhythms, not the same animation recolored. Flagship-only —
+     the four supporting-project plates carry no motion at all. */
+  --duration-beacon: 3400ms;   /* TriageRL — one steady pulse, unhurried */
+  --duration-signal: 2200ms;   /* Afroglot — two quick pulses, then a pause */
+
+}
+
+/* prefers-reduced-motion fallback hook — components should check this
+   and disable starfield motion, ripples, and beacon/signal marks accordingly.
+   Note: this zeroes durations, but looping marks (beacon/signal) should be
+   removed outright in component CSS, not just sped to 0ms — see the
+   web-animation-design guidance on reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-hover: 0ms;
+    --duration-glow: 0ms;
+    --duration-ripple: 0ms;
+    --duration-beacon: 0ms;
+    --duration-signal: 0ms;
+  }
+}
