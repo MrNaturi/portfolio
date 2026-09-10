@@ -5,12 +5,14 @@ export function Footer() {
 return `
     <footer class="site-footer">
         <span class="wordmark">Ofuje</span>
-        <ul class="footer-links">
-            ${links.map(link => `<li><a href="${link.href}">${link.label}</a></li>`).join('')}
-        </ul>
-        <ul class="footer-socials">
-            ${socials.map(social => `<li><a href="${social.href}">${social.label}</a></li>`).join('')}
-        </ul>
+        <div class="footer-nav-group">
+            <ul class="footer-links">
+                ${links.map(link => `<li><a href="${link.href}">${link.label}</a></li>`).join('')}
+            </ul>
+            <ul class="footer-socials">
+                ${socials.map(social => `<li><a href="${social.href}">${social.label}</a></li>`).join('')}
+            </ul>
+        </div>
     </footer>
   `;
 }
