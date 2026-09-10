@@ -29,8 +29,10 @@
   --accent-ember: #F2703C;    /* TriageRL — "beacon": single steady pulse, urgency */
   --accent-teal: #2FBFA8;     /* Afroglot — "signal": rhythmic double-pulse, transmission.
                                   Also used for About's name-pronunciation ripple. */
-  --accent-brass: #C9A26A;    /* structural chrome — rivets, hairlines, serial labels.
-                                  Never animated — it's the panel, not the signal. */
+  --accent-brass: #C9A26A;    /** structural chrome (rivets, hairlines, serial labels)
+                                AND the site's general neutral interactive/emphasis
+                                accent — nav hovers, active states, headline emphasis.
+                                Never carries flagship-specific meaning.*/
   --accent-brass-dim: #8A7350; /* rivets, secondary brass detail */
 
   /* ---- Color: accent glows (rgba strings for box-shadow use) ---- */
