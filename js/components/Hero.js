@@ -1,6 +1,9 @@
+import { StarfieldCanvas } from "./Starfield.js";
+
 export function Hero() {
   return `
     <section class="hero">
+      ${StarfieldCanvas()}
       <p class="hero__eyebrow">I like building things and seeing where they go.</p>
 
       <h1 class="hero__title">
@@ -13,4 +16,3 @@ export function Hero() {
     </section>
   `;
 }
-
