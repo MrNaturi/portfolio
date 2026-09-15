@@ -14,7 +14,7 @@
 }
 
 .hero__title {
-    font-size: var(--text-hero-desktop);
+    font-size: var(--text-hero);
     font-weight: var(--weight-display);
     line-height: var(--leading-tight);
     color: var(--text-primary);

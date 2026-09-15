@@ -66,15 +66,18 @@
                                       /* serials, coordinates, meta labels —
                                          the engraved numerals on the instrument */
 
-  /* ---- Typography: sizes (unchanged from the locked Home pass) ---- */
-  --text-hero-desktop: 52px;
-  --text-hero-mobile: 32px;
-  --text-h2: 12px;             /* meta/serial labels — sentence case, NOT uppercase */
-  --text-h3: 22px;             /* plate titles, name */
-  --text-h3-large: 28px;       /* About page name — bumped anchor size */
-  --text-body: 16px;
-  --text-small: 14px;
-  --text-meta: 11px;
+  /* ---- Typography: sizes ----
+     Display sizes are fluid: they scale with the viewport between a floor
+     and a ceiling, so one token covers phone to desktop without media
+     queries. Small text stays fixed — it shouldn't shrink below legibility. */
+  --text-hero: clamp(2.5rem, 1.35rem + 5.2vw, 5.5rem);     /* 40px → 88px */
+  --text-h2: clamp(1.875rem, 1.4rem + 2vw, 2.75rem);       /* 30px → 44px, section heads */
+  --text-h3: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);       /* 20px → 24px, plate titles */
+  --text-h3-large: clamp(1.5rem, 1.25rem + 1vw, 1.875rem); /* 24px → 30px, About name */
+  --text-body: 1rem;           /* 16px */
+  --text-small: 0.875rem;      /* 14px */
+  --text-label: 0.75rem;       /* 12px — mono serials/coordinates, sentence case */
+  --text-meta: 0.6875rem;      /* 11px — smallest mono detail only */
 
   /* ---- Typography: weights ---- */
   --weight-regular: 400;
@@ -82,7 +85,8 @@
   --weight-semibold: 600;
   --weight-display: 400;       /* IM Fell English ships a single weight (plus italic) */
 
-  /* ---- Typography: line-height (unchanged) ---- */
+  /* ---- Typography: line-height ---- */
+  --leading-display: 1.05;     /* large display lines — IM Fell sets loose */
   --leading-tight: 1.25;
   --leading-body: 1.6;
 
