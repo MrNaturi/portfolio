@@ -407,3 +407,36 @@
   font-size: 0.9375rem;
   color: var(--text-muted);
 }
+
+/* ---- Current section in the rail ---- */
+
+.resume-toc a {
+  position: relative;
+}
+
+.resume-toc a::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: calc(100% + var(--space-2));
+  width: 10px;
+  height: 1px;
+  background: var(--accent-brass);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--duration-glow) var(--ease-out);
+}
+
+.resume-toc a[aria-current] {
+  color: var(--accent-brass);
+}
+
+.resume-toc a[aria-current]::before {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resume-toc a::before {
+    transition: none;
+  }
+}
