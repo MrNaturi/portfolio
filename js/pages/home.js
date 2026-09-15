@@ -1,7 +1,8 @@
 import { render, renderShell } from "./shell.js";
 import { Hero } from "../components/Hero.js";
 import { AboutTeaser } from "../components/AboutTeaser.js";
-import { SelectedWork, initSelectedWork } from "../components/SelectedWork.js";
+import { SelectedWork } from "../components/SelectedWork.js";
+import { initMotionMarks } from "../components/MotionMark.js";
 import { WritingPreview } from "../components/WritingPreview.js";
 import { Contact, initContact } from "../components/Contact.js";
 import { initStarfield } from "../components/Starfield.js";
@@ -17,5 +18,5 @@ render({
 });
 
 initStarfield();
-initSelectedWork();
+initMotionMarks();
 initContact();
