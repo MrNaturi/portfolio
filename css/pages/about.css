@@ -985,3 +985,21 @@
   color: var(--text-faint);
   pointer-events: none;
 }
+
+/* ---- Play Sweden: teal, since it drives the player's signal ---- */
+
+.about-play-sweden {
+  color: var(--accent-teal);
+  border-color: rgba(47, 191, 168, 0.4);
+}
+
+.about-play-sweden.is-playing {
+  border-color: var(--accent-teal);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .about-play-sweden:hover {
+    color: var(--text-primary);
+    border-color: var(--accent-teal);
+  }
+}

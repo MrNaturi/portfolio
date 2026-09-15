@@ -13,6 +13,7 @@ import { initCuriosityPipeline } from "../components/about/CuriosityPipeline.js"
 import { initCoordinates } from "../components/about/Coordinates.js";
 import { initGuitar } from "../components/about/Guitar.js";
 import { initSketchPad } from "../components/about/SketchPad.js";
+import { initPlaySweden } from "../components/about/PlaySweden.js";
 
 renderShell();
 
@@ -36,3 +37,4 @@ initCuriosityPipeline();
 initCoordinates();
 initGuitar();
 initSketchPad();
+initPlaySweden();
