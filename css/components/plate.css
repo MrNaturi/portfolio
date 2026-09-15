@@ -315,3 +315,33 @@
 .plate--supporting .plate__stack {
   padding-top: var(--space-2);
 }
+
+/* ---- Project names that link onward (to /projects or a case study) ---- */
+
+.plate__name-link {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1px;
+  transition:
+    color var(--duration-hover) var(--ease-hover),
+    background-size 350ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .plate--flagship .plate__name-link:hover {
+    color: var(--plate-accent);
+    background-size: 100% 1px;
+  }
+
+  .plate--supporting .plate__name-link:hover {
+    color: var(--accent-brass);
+    background-size: 100% 1px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plate__name-link {
+    transition: none;
+  }
+}

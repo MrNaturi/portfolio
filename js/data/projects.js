@@ -28,7 +28,13 @@ export const flagships = [
       { value: "+7.6%", label: "throughput" },
     ],
     resultsNote: "vs. severity-rule baseline",
-    links: [{ label: "GitHub", href: "https://github.com/e-dania/TriageRL" }],
+    caseStudy: "/projects/triagerl",
+    links: [
+      { label: "Case study", href: "/projects/triagerl" },
+      { label: "Live", href: "https://triagerl.onrender.com/" },
+      { label: "Demo video", href: "https://drive.google.com/file/d/1xKa9FgESG11B0YHXsIxKq-Z9JYoKZOs_/view" },
+      { label: "GitHub", href: "https://github.com/e-dania/TriageRL" },
+    ],
   },
   {
     id: "afroglot",

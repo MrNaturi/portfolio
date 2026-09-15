@@ -60,7 +60,7 @@ function Body(project) {
   const stack = project.fullStack ?? project.stack;
   return `
     <div class="entry__spec">
-      <h3 class="plate__name entry__name" id="entry-${project.id}-title">${project.name}</h3>
+      <h3 class="plate__name entry__name" id="entry-${project.id}-title">${project.caseStudy ? `<a class="plate__name-link" href="${project.caseStudy}">${project.name}</a>` : project.name}</h3>
       ${Facts(project)}
       <ul class="entry__stack" aria-label="Stack">
         ${stack.map((item) => `<li>${item}</li>`).join("")}
