@@ -39,11 +39,17 @@
 [data-intro="play"] .hero__title   { animation-delay: 560ms; }
 [data-intro="play"] .hero__intro   { animation-delay: 720ms; }
 
+/* The exposure hint arrives last, once the sky has settled */
+[data-intro="play"] .hero__hint {
+  animation: intro-haze 900ms var(--ease-out) 1400ms backwards; /* not "both": a held end state would override the fade once it is used */
+}
+
 /* Belt and braces: the inline script already skips the intro here */
 @media (prefers-reduced-motion: reduce) {
   [data-intro="play"] body::before,
   [data-intro="play"] .hero::before,
-  [data-intro="play"] .hero > * {
+  [data-intro="play"] .hero > *,
+  [data-intro="play"] .hero__hint {
     animation: none;
   }
 }

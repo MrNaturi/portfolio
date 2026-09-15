@@ -40,3 +40,54 @@
   font-size: clamp(var(--text-body), 0.95rem + 0.25vw, 1.125rem);
   color: var(--text-muted);
 }
+
+/* ---- Long-exposure hint ----
+   A caption engraved at the foot of the hero, like the instructions on an
+   instrument's base plate. Mouse and touch get their own wording. */
+
+.hero__hint {
+  position: absolute;
+  left: max(var(--gutter), (100% - var(--layout-max-width)) / 2);
+  /* Stop short of the fixed player button in the bottom-right corner */
+  right: calc(var(--gutter) + 72px);
+  bottom: var(--space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+  pointer-events: none; /* pressing on the caption still presses the sky */
+  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+}
+
+.hero__hint-mark {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: var(--accent-brass-dim);
+  stroke-width: 1.2;
+}
+
+.hero__hint-text--touch {
+  display: none;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .hero__hint-text--fine { display: none; }
+  .hero__hint-text--touch { display: inline; }
+}
+
+/* Used once: step aside */
+.hero__hint.is-found {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__hint {
+    transition: none;
+  }
+}

@@ -6,6 +6,7 @@ import { initMotionMarks } from "../components/MotionMark.js";
 import { WritingPreview } from "../components/WritingPreview.js";
 import { Contact, initContact } from "../components/Contact.js";
 import { initStarfield } from "../components/Starfield.js";
+import { initExposureHint } from "../components/ExposureHint.js";
 
 renderShell();
 
@@ -18,5 +19,6 @@ render({
 });
 
 initStarfield();
+initExposureHint();
 initMotionMarks();
 initContact();
