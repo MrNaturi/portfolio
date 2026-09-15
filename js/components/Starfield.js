@@ -188,7 +188,6 @@ export function initStarfield() {
 
   function paintSkyLayer() {
     skyCtx.clearRect(0, 0, width, height);
-    drawHaze(skyCtx);
     skyCtx.fillStyle = `rgb(${STAR_RGB})`;
     for (const star of stars) {
       skyCtx.globalAlpha = star.opacity;
@@ -197,24 +196,6 @@ export function initStarfield() {
       skyCtx.fill();
     }
     skyCtx.globalAlpha = 1;
-  }
-
-  // Soft glow along the band so it reads as the Milky Way, not just a
-  // denser strip of dots. A gradient runs perpendicular to the band
-  // (the band's normal is the (1, 1) direction), peaking on its centre line.
-  function drawHaze(context = ctx) {
-    const cx = width / 2;
-    const cy = height / 2;
-    const spread = Math.hypot(width, height) * 0.16;
-    const nx = spread / Math.SQRT2;
-    const gradient = context.createLinearGradient(cx - nx, cy - nx, cx + nx, cy + nx);
-    gradient.addColorStop(0, `rgba(${STAR_RGB}, 0)`);
-    gradient.addColorStop(0.3, `rgba(${STAR_RGB}, 0.012)`);
-    gradient.addColorStop(0.5, `rgba(${STAR_RGB}, 0.03)`);
-    gradient.addColorStop(0.7, `rgba(${STAR_RGB}, 0.012)`);
-    gradient.addColorStop(1, `rgba(${STAR_RGB}, 0)`);
-    context.fillStyle = gradient;
-    context.fillRect(0, 0, width, height);
   }
 
   function drawDot(x, y, radius, opacity) {
@@ -425,10 +406,6 @@ export function initStarfield() {
     if (intro >= 1 && !trailing) {
       // Common case: resting sky, possibly with the lens on top
       ctx.drawImage(skyLayer, 0, 0, width, height);
-    } else {
-      ctx.globalAlpha = intro;
-      drawHaze();
-      ctx.globalAlpha = 1;
     }
 
     if (trailing) {

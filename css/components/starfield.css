@@ -33,3 +33,23 @@
 .hero :is(h1, h2, h3, p) {
   -webkit-touch-callout: default;
 }
+
+/* Milky Way haze: a soft glow along the star band, which runs from the
+   bottom-left corner to the top-right. "to bottom right" angles a CSS
+   gradient so its 50% line passes exactly through those two corners.
+   Kept in CSS rather than the canvas so it costs nothing per frame. */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom right,
+    transparent 38%,
+    rgba(236, 231, 220, 0.012) 44%,
+    rgba(236, 231, 220, 0.03) 50%,
+    rgba(236, 231, 220, 0.012) 56%,
+    transparent 62%
+  );
+}

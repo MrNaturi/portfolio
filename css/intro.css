@@ -21,6 +21,16 @@
   animation: intro-grid 1200ms var(--ease-out-expo) both;
 }
 
+/* The Milky Way haze fades in alongside the stars */
+[data-intro="play"] .hero::before {
+  animation: intro-haze 1100ms var(--ease-out) 250ms both;
+}
+
+@keyframes intro-haze {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 [data-intro="play"] .hero > :is(.hero__eyebrow, .hero__title, .hero__intro) {
   animation: intro-rise 700ms var(--ease-out) both;
 }
@@ -32,6 +42,7 @@
 /* Belt and braces: the inline script already skips the intro here */
 @media (prefers-reduced-motion: reduce) {
   [data-intro="play"] body::before,
+  [data-intro="play"] .hero::before,
   [data-intro="play"] .hero > * {
     animation: none;
   }
