@@ -49,8 +49,7 @@ export const flagships = [
       "Users can upload or record speech and receive a transcription in their native language, or enter text and generate natural-sounding speech with tonal inflections. I integrated existing speech models through Spitch APIs rather than training a model from scratch, and built the product experience around them.",
     ],
     role: "Full-stack developer",
-    // TODO: confirm the rest of the stack
-    stack: ["Spitch APIs"],
+    stack: ["React", "Firebase", "Spitch APIs"],
     year: "2025",
     status: "Shipped prototype",
     results: [
