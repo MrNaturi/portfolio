@@ -1,0 +1,19 @@
+/* Fixed bottom-left, clear of the music player's bottom-right corner */
+.moon-phase {
+  position: fixed;
+  left: max(var(--space-4), env(safe-area-inset-left, 0px));
+  bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+  line-height: 0;
+  pointer-events: none;
+}
+
+.moon-phase__disc {
+  fill: var(--bg-void-deep);
+  stroke: var(--accent-brass-dim);
+  stroke-width: 1;
+}
+
+.moon-phase__lit {
+  fill: var(--accent-brass);
+}
