@@ -1,0 +1,116 @@
+/* ==========================================================================
+   Contact — the page's closing statement. One large question, the address
+   set big enough to read as the answer, and a quiet row of elsewheres.
+   ========================================================================== */
+
+.section__title--quiet {
+  margin: 0;
+  font-family: var(--font-display);
+}
+
+.contact__title {
+  max-width: 16ch;
+  margin-bottom: var(--space-4);
+  font-size: clamp(2.25rem, 1.4rem + 3.6vw, 4.25rem);
+  line-height: var(--leading-display);
+}
+
+.contact__copy {
+  max-width: 50ch;
+  margin: 0 0 var(--space-6);
+  color: var(--text-muted);
+}
+
+.contact__email-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.contact__email {
+  /* Mono, not IM Fell: IM Fell's old-style figures make the "0" in the
+     address read as an "o", and people copy this by eye. */
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 0.8rem + 1vw, 1.625rem);
+  line-height: 1.4;
+  overflow-wrap: anywhere; /* long address never forces a sideways scroll */
+  color: var(--accent-brass);
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 95%;
+  background-size: 100% 1px;
+  transition: background-size 350ms var(--ease-out), color var(--duration-hover) var(--ease-hover);
+}
+
+.contact__copy-button {
+  min-height: 2.75rem; /* 44px tap target */
+  padding: 0 var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-control);
+  cursor: pointer;
+  transition:
+    color var(--duration-hover) var(--ease-hover),
+    border-color var(--duration-hover) var(--ease-hover);
+}
+
+.contact__copy-button:active {
+  transform: scale(0.97);
+}
+
+.contact__copy-button.is-copied {
+  color: var(--accent-brass);
+  border-color: var(--border-hairline-strong);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .contact__email:hover {
+    color: var(--text-primary);
+    background-size: 30% 1px;
+  }
+
+  .contact__copy-button:hover {
+    color: var(--text-primary);
+    border-color: var(--border-hairline-strong);
+  }
+}
+
+.contact__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-5);
+  margin: 0;
+  padding: var(--space-4) 0 0;
+  list-style: none;
+  border-top: 1px solid var(--border-hairline);
+}
+
+.contact__links a {
+  display: inline-block;
+  padding-block: var(--space-2);
+  color: var(--text-muted);
+  transition: color var(--duration-hover) var(--ease-hover);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .contact__links a:hover {
+    color: var(--accent-brass);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact__email,
+  .contact__copy-button {
+    transition: none;
+  }
+
+  .contact__copy-button:active {
+    transform: none;
+  }
+}
