@@ -21,7 +21,8 @@
   /* ---- Color: text ---- */
   --text-primary: #ECE7DC;    /* warm off-white, not pure white — matches brass warmth */
   --text-muted: #9A9788;
-  --text-faint: #605E56;      /* meta text, serials, icons at rest */
+  --text-faint: #878477;      /* meta text, serials, icons at rest.
+                                 5.2:1 on base, 4.6:1 on raised plate (AA) */
 
   /* ---- Color: accents (each tied to a specific meaning — don't mix) ----
      Only three accents now. Ember and teal each carry a motion language
@@ -33,7 +34,8 @@
                                 AND the site's general neutral interactive/emphasis
                                 accent — nav hovers, active states, headline emphasis.
                                 Never carries flagship-specific meaning.*/
-  --accent-brass-dim: #8A7350; /* rivets, secondary brass detail */
+  --accent-brass-dim: #9A8260; /* rivets, secondary brass detail.
+                                  5.3:1 on base — safe for small text */
 
   /* ---- Color: accent glows (rgba strings for box-shadow use) ---- */
   --glow-ember-tight: rgba(242, 112, 60, 0.15);
