@@ -167,32 +167,54 @@ export function initStarfield() {
 
   // Match the drawing buffer to the displayed size × device pixel ratio,
   // then scale the context so drawing code keeps working in CSS pixels.
+  // The resting sky (haze + stars) never changes between resizes, so it is
+  // painted once to an offscreen canvas and copied in with one drawImage per
+  // frame, instead of re-filling hundreds of stars while the lens moves.
+  const skyLayer = document.createElement("canvas");
+  const skyCtx = skyLayer.getContext("2d");
+
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     width = canvas.clientWidth;
     height = canvas.clientHeight;
-    canvas.width = Math.round(width * dpr);
-    canvas.height = Math.round(height * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    for (const [target, context] of [[canvas, ctx], [skyLayer, skyCtx]]) {
+      target.width = Math.round(width * dpr);
+      target.height = Math.round(height * dpr);
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    paintSkyLayer();
     requestDraw();
+  }
+
+  function paintSkyLayer() {
+    skyCtx.clearRect(0, 0, width, height);
+    drawHaze(skyCtx);
+    skyCtx.fillStyle = `rgb(${STAR_RGB})`;
+    for (const star of stars) {
+      skyCtx.globalAlpha = star.opacity;
+      skyCtx.beginPath();
+      skyCtx.arc(star.x * width, star.y * height, star.radius, 0, Math.PI * 2);
+      skyCtx.fill();
+    }
+    skyCtx.globalAlpha = 1;
   }
 
   // Soft glow along the band so it reads as the Milky Way, not just a
   // denser strip of dots. A gradient runs perpendicular to the band
   // (the band's normal is the (1, 1) direction), peaking on its centre line.
-  function drawHaze() {
+  function drawHaze(context = ctx) {
     const cx = width / 2;
     const cy = height / 2;
     const spread = Math.hypot(width, height) * 0.16;
     const nx = spread / Math.SQRT2;
-    const gradient = ctx.createLinearGradient(cx - nx, cy - nx, cx + nx, cy + nx);
+    const gradient = context.createLinearGradient(cx - nx, cy - nx, cx + nx, cy + nx);
     gradient.addColorStop(0, `rgba(${STAR_RGB}, 0)`);
     gradient.addColorStop(0.3, `rgba(${STAR_RGB}, 0.012)`);
     gradient.addColorStop(0.5, `rgba(${STAR_RGB}, 0.03)`);
     gradient.addColorStop(0.7, `rgba(${STAR_RGB}, 0.012)`);
     gradient.addColorStop(1, `rgba(${STAR_RGB}, 0)`);
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, height);
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, width, height);
   }
 
   function drawDot(x, y, radius, opacity) {
@@ -398,11 +420,17 @@ export function initStarfield() {
         ? 1
         : Math.min(1, Math.max(0, (performance.now() - introStart) / INTRO_DURATION));
 
-    ctx.globalAlpha = intro;
-    drawHaze();
-    ctx.globalAlpha = 1;
-
     const trailing = exposure.angle > 0.05;
+
+    if (intro >= 1 && !trailing) {
+      // Common case: resting sky, possibly with the lens on top
+      ctx.drawImage(skyLayer, 0, 0, width, height);
+    } else {
+      ctx.globalAlpha = intro;
+      drawHaze();
+      ctx.globalAlpha = 1;
+    }
+
     if (trailing) {
       const fade =
         exposure.state === "releasing"
@@ -415,7 +443,7 @@ export function initStarfield() {
       }
     }
 
-    if (!trailing) for (const star of stars) {
+    if (!trailing && intro < 1) for (const star of stars) {
       // Each star waits its turn by brightness, then fades over the rest
       let reveal = 1;
       if (intro < 1) {
