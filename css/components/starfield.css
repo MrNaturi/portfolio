@@ -23,3 +23,13 @@
   user-select: none;
   -webkit-user-select: none;
 }
+
+/* Long-pressing open sky on touch starts an exposure, so suppress the iOS
+   callout there — but keep it on text, where a long press means "select". */
+.hero {
+  -webkit-touch-callout: none;
+}
+
+.hero :is(h1, h2, h3, p) {
+  -webkit-touch-callout: default;
+}

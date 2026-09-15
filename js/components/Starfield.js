@@ -15,7 +15,9 @@ const INTRO_DURATION = 1100; // ms
 const INTRO_STAGGER = 0.75;  // share of the intro spent staggering by brightness
 
 // Long exposure (press and hold)
-const HOLD_DELAY = 180;          // ms before a press becomes an exposure
+const HOLD_DELAY = 180;          // ms before a mouse/pen press becomes an exposure
+const TOUCH_HOLD_DELAY = 420;    // ms for a long press on touch — longer, so taps and scrolls win
+const TOUCH_SLOP = 10;           // px a finger may drift before the press counts as a scroll
 const EXPOSURE_MAX_SPEED = 7;    // degrees of sky rotation per second, at full speed
 const EXPOSURE_RAMP = 1.2;       // seconds to reach full speed
 const EXPOSURE_MAX_ANGLE = 32;   // degrees — trails stop growing here
@@ -487,12 +489,17 @@ export function initStarfield() {
 
   function armExposure(event) {
     if (event.button !== 0 || event.target.closest(TEXT)) return;
-    event.preventDefault(); // a press on open sky shouldn't start a text drag-select
+    const isTouch = event.pointerType === "touch";
+    // A mouse press on open sky shouldn't start a text drag-select. Touch
+    // is left alone here so the page can still scroll normally.
+    if (!isTouch) event.preventDefault();
     const rect = canvas.getBoundingClientRect();
     exposure.anchor = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+    exposure.pressX = event.clientX;
+    exposure.pressY = event.clientY;
     exposure.state = "armed";
     clearTimeout(exposure.timer);
-    exposure.timer = setTimeout(beginExposure, HOLD_DELAY);
+    exposure.timer = setTimeout(beginExposure, isTouch ? TOUCH_HOLD_DELAY : HOLD_DELAY);
   }
 
   function endExposure() {
@@ -513,9 +520,29 @@ export function initStarfield() {
     }
   }
 
-  host.addEventListener("pointerdown", (event) => {
-    if (event.pointerType !== "touch") armExposure(event);
+  host.addEventListener("pointerdown", armExposure);
+
+  // A finger that drifts before the long press fires is scrolling, not holding
+  host.addEventListener("pointermove", (event) => {
+    if (exposure.state !== "armed" || event.pointerType !== "touch") return;
+    if (Math.hypot(event.clientX - exposure.pressX, event.clientY - exposure.pressY) > TOUCH_SLOP) {
+      endExposure();
+    }
   });
+
+  // Once an exposure is running, keep the finger from scrolling the page or
+  // opening the long-press menu.
+  host.addEventListener(
+    "touchmove",
+    (event) => {
+      if (exposure.state === "exposing") event.preventDefault();
+    },
+    { passive: false }
+  );
+  host.addEventListener("contextmenu", (event) => {
+    if (exposure.state !== "idle") event.preventDefault();
+  });
+  window.addEventListener("pointercancel", endExposure);
   // Listen on window so releasing outside the hero still ends the exposure
   window.addEventListener("pointerup", endExposure);
   window.addEventListener("blur", endExposure);
