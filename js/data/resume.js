@@ -135,11 +135,33 @@ export const skills = [
   { area: "Tools", items: ["Git", "Bash", "Vercel", "Figma", "n8n"] },
 ];
 
+// `print` is the one-line form used on paper
 export const beyond = [
-  { when: "ALU", title: "Vice President, Astronomy Club", text: "Ran events on astronomy, physics and scientific inquiry." },
-  { when: "2025", title: "Organiser, Agahozo-Shalom Youth Village visit", text: "Planned a learning visit to the solar farm and ran STEM trivia workshops with local students." },
-  { when: "Writing", title: "Medium and Substack", text: "Technical devlogs and case studies on Medium; personal essays in <i>Ofuje's Rough Drafts</i>.", href: "/writing" },
-  { when: "Certificates", title: "freeCodeCamp", text: "Responsive Web Design · JavaScript Algorithms & Data Structures" },
+  {
+    when: "ALU",
+    title: "Vice President, Astronomy Club",
+    text: "Ran events on astronomy, physics and scientific inquiry.",
+    print: "<b>Vice President, ALU Astronomy Club</b>: ran events on astronomy, physics and scientific inquiry.",
+  },
+  {
+    when: "2025",
+    title: "Organiser, Agahozo-Shalom Youth Village visit",
+    text: "Planned a learning visit to the solar farm and ran STEM trivia workshops with local students.",
+    print: "<b>Organiser, Agahozo-Shalom Youth Village visit (2025)</b>: planned a solar farm learning visit and ran STEM trivia workshops.",
+  },
+  {
+    when: "Writing",
+    title: "Medium and Substack",
+    text: "Technical devlogs and case studies on Medium; personal essays in <i>Ofuje's Rough Drafts</i>.",
+    href: "/writing",
+    print: "<b>Writing</b>: technical devlogs on Medium; personal essays on Substack (<i>Ofuje's Rough Drafts</i>).",
+  },
+  {
+    when: "Certificates",
+    title: "freeCodeCamp",
+    text: "Responsive Web Design · JavaScript Algorithms & Data Structures",
+    print: "<b>Certificates</b>: freeCodeCamp Responsive Web Design; JavaScript Algorithms &amp; Data Structures.",
+  },
 ];
 
 export const pdf = {

@@ -1,0 +1,169 @@
+/* ==========================================================================
+   Resume on paper — print and the downloadable PDF.
+   Loaded with media="print". Everything on screen is dropped except the
+   paper version, which lays the same content out on one light A4 sheet:
+   same typefaces, brass toned down to ink.
+   ========================================================================== */
+
+@page {
+  size: A4;
+  margin: 12mm 14mm;
+}
+
+:root {
+  --ink: #1c1b19;
+  --ink-strong: #111;
+  --ink-muted: #4a4843;
+  --ink-faint: #5d5a53;
+  --ink-brass: #6f5424;
+  --ink-rule: #c9b48f;
+  --ink-marker: #9a8260;
+}
+
+html,
+body {
+  color-scheme: light;
+  background: #fff !important;
+  color: var(--ink);
+}
+
+body::before,
+body::after,
+#nav-root,
+#footer-root,
+#player-root,
+#resume-intro-root,
+#resume-body-root {
+  display: none !important;
+}
+
+.resume {
+  padding: 0;
+}
+
+.paper {
+  display: block !important;
+  font-family: var(--font-body);
+  font-size: 9pt;
+  line-height: 1.38;
+  color: var(--ink);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.paper p {
+  margin: 0;
+}
+
+.paper b {
+  font-weight: var(--weight-semibold);
+  color: var(--ink-strong);
+}
+
+.paper__name {
+  font-family: var(--font-display);
+  font-size: 24pt;
+  line-height: 1;
+  color: var(--ink-strong);
+}
+
+.paper__title {
+  margin-top: 3pt !important;
+  font-size: 10.5pt;
+  color: var(--ink-muted);
+}
+
+.paper__contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2pt 11pt;
+  margin-top: 6pt !important;
+  font-family: var(--font-mono);
+  font-size: 7pt;
+  color: var(--ink-muted);
+}
+
+.paper__sec {
+  display: flex;
+  align-items: baseline;
+  gap: 8pt;
+  margin: 9pt 0 4pt;
+  font-family: var(--font-display);
+  font-size: 12.5pt;
+  color: var(--ink-brass);
+  break-after: avoid;
+}
+
+.paper__sec::after {
+  content: "";
+  flex: 1;
+  align-self: center;
+  height: 0;
+  border-top: 0.5pt solid var(--ink-rule);
+}
+
+.paper-entry {
+  margin-bottom: 5pt;
+  break-inside: avoid;
+}
+
+.paper-entry__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10pt;
+}
+
+.paper-entry__head span {
+  color: var(--ink-muted);
+}
+
+.paper-entry__when {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 7.2pt;
+  color: var(--ink-faint);
+}
+
+.paper ul {
+  margin: 2pt 0 0;
+  padding-left: 11pt;
+}
+
+.paper li {
+  margin: 0.5pt 0;
+}
+
+.paper li::marker {
+  color: var(--ink-marker);
+}
+
+.paper-entry__stack {
+  margin-top: 1pt !important;
+  font-family: var(--font-mono);
+  font-size: 7pt;
+  color: #6b675f;
+}
+
+.paper__skills {
+  display: grid;
+  grid-template-columns: 74pt 1fr;
+  gap: 2pt 8pt;
+  margin: 0;
+}
+
+.paper__skills dt {
+  font-family: var(--font-mono);
+  font-size: 7.2pt;
+  line-height: 1.9;
+  color: var(--ink-faint);
+}
+
+.paper__skills dd {
+  margin: 0;
+}
+
+.paper a {
+  color: inherit;
+  text-decoration: none;
+}
