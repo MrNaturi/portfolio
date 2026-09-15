@@ -65,6 +65,10 @@
   font-variant-numeric: tabular-nums; /* digits don't shift as minutes tick */
 }
 
+.observation-log__part {
+  white-space: nowrap; /* wrap between segments, never inside "11h 23m" */
+}
+
 .observation-log__sep {
   color: var(--accent-brass-dim);
 }

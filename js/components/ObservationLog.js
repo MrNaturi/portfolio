@@ -47,7 +47,9 @@ export function initObservationLog() {
       `<time datetime="${now.toISOString()}">${timeFormat.format(now)}</time> local`,
       `sidereal ${formatSidereal(gmstHours(now))} GMST`,
     ];
-    el.innerHTML = parts.join('<span class="observation-log__sep" aria-hidden="true"> · </span>');
+    el.innerHTML = parts
+      .map((part) => `<span class="observation-log__part">${part}</span>`)
+      .join('<span class="observation-log__sep" aria-hidden="true"> · </span>');
     el.hidden = false;
   }
 
