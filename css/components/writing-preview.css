@@ -32,7 +32,11 @@
   }
 }
 
-.writing-preview__date {
+.writing-preview__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  margin: 0;
   font-family: var(--font-mono);
   font-size: var(--text-label);
   letter-spacing: var(--tracking-label);
@@ -40,10 +44,29 @@
   font-variant-numeric: tabular-nums;
 }
 
+@media (min-width: 48rem) {
+  .writing-preview__meta {
+    flex-direction: column;
+  }
+}
+
+.writing-preview__kind {
+  color: var(--accent-brass-dim);
+}
+
 .writing-preview__title {
   font-size: clamp(1.5rem, 1.2rem + 1.3vw, 2.25rem);
   font-style: italic;
   line-height: 1.15;
+}
+
+/* Technical entries take the Writing page's field-note title */
+.writing-preview__item--technical .writing-preview__title {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: var(--weight-medium);
+  font-size: clamp(1.25rem, 1.05rem + 0.8vw, 1.625rem);
+  line-height: 1.3;
 }
 
 .writing-preview__title a {
@@ -76,8 +99,8 @@
     background-size: 100% 1px;
   }
 
-  .writing-preview__item:hover .writing-preview__date {
-    color: var(--accent-brass-dim);
+  .writing-preview__item:hover .writing-preview__meta time {
+    color: var(--text-muted);
   }
 }
 

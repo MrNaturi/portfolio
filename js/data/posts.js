@@ -128,6 +128,3 @@ export const findPost = (id) => allPosts.find((post) => post.id === id);
 
 // Reading view URL for a post
 export const readHref = (post) => `/writing/read?post=${encodeURIComponent(post.id)}`;
-
-// Home's Writing preview still reads this; it moves to `entries` next
-export const posts = essays;
