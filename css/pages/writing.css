@@ -1,0 +1,279 @@
+/* ==========================================================================
+   Writing page — two kinds of writing, two looks.
+   Essays: a logbook, IM Fell italic titles.  Technical: field notes, plain
+   Karla titles with a mono topics line. Both share the dated-row frame.
+   ========================================================================== */
+
+/* ---- Header ---- */
+
+.writing-header {
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-5);
+}
+
+.writing-header__eyebrow {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+}
+
+.writing-header__title {
+  font-size: var(--text-hero);
+  line-height: var(--leading-display);
+}
+
+.writing-header__intro {
+  max-width: 46ch;
+  margin: var(--space-4) 0 0;
+  font-size: clamp(var(--text-body), 0.95rem + 0.25vw, 1.125rem);
+  color: var(--text-muted);
+}
+
+/* ---- Groups ---- */
+
+.writing-group {
+  padding-top: var(--space-6);
+  scroll-margin-top: var(--space-5);
+}
+
+.writing-group__note {
+  margin: calc(-1 * var(--space-4)) 0 var(--space-5);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+}
+
+.post-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--border-hairline);
+}
+
+/* ---- Row frame ---- */
+
+.post {
+  display: grid;
+  gap: var(--space-2) var(--space-6);
+  padding-block: var(--space-5);
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+@media (min-width: 48rem) {
+  .post {
+    grid-template-columns: 9rem 1fr;
+    align-items: baseline;
+  }
+}
+
+.post__date,
+.post__topics,
+.post__source,
+.post__related {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.post__body {
+  max-width: 62ch;
+}
+
+.post__title a {
+  background-image: linear-gradient(var(--accent-brass), var(--accent-brass));
+  background-repeat: no-repeat;
+  background-position: 0 92%;
+  background-size: 0 1px;
+  transition:
+    color var(--duration-hover) var(--ease-hover),
+    background-size 350ms var(--ease-out);
+}
+
+.post__summary {
+  margin: var(--space-2) 0 0;
+  color: var(--text-muted);
+}
+
+.post__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin: var(--space-3) 0 0;
+}
+
+.post__source,
+.post__related {
+  padding-block: 2px;
+  color: var(--text-muted);
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 1px;
+  transition: color var(--duration-hover) var(--ease-hover);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .post__title a:hover {
+    color: var(--accent-brass);
+    background-size: 100% 1px;
+  }
+
+  .post__source:hover,
+  .post__related:hover {
+    color: var(--accent-brass);
+  }
+}
+
+/* ---- Essays ---- */
+
+.post--essay .post__title {
+  font-size: clamp(1.5rem, 1.2rem + 1.3vw, 2.25rem);
+  font-style: italic;
+  line-height: 1.15;
+}
+
+/* ---- Technical ---- */
+
+.post--technical .post__title {
+  font-family: var(--font-body);
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  font-weight: var(--weight-medium);
+  line-height: 1.3;
+}
+
+/* ---- Series ---- */
+
+.series__toggle {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  padding: 0;
+  font: inherit;
+  text-align: left;
+  color: var(--text-primary);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: color var(--duration-hover) var(--ease-hover);
+}
+
+/* A plus that turns into a minus: the only affordance, kept small */
+.series__count {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-label);
+  color: var(--accent-brass);
+}
+
+.series__count::after {
+  content: "";
+  width: 9px;
+  height: 9px;
+  background:
+    linear-gradient(currentColor, currentColor) center / 9px 1px no-repeat,
+    linear-gradient(currentColor, currentColor) center / 1px 9px no-repeat;
+  transition: transform 250ms var(--ease-out);
+}
+
+.series__toggle[aria-expanded="true"] .series__count::after {
+  background: linear-gradient(currentColor, currentColor) center / 9px 1px no-repeat;
+  transform: rotate(180deg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .series__toggle:hover {
+    color: var(--accent-brass);
+  }
+}
+
+/* Height animation without measuring: a 0fr → 1fr grid row */
+.series__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 320ms var(--ease-out),
+    opacity 220ms var(--ease-out);
+}
+
+.series__panel.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.series__panel > .series__parts {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.series__parts {
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+  border-left: 1px solid var(--border-hairline-strong);
+}
+
+.series__part {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  gap: var(--space-3);
+  padding: var(--space-3) 0 var(--space-3) var(--space-4);
+}
+
+.series__part + .series__part {
+  border-top: 1px solid var(--border-hairline);
+}
+
+.series__n {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-label);
+  color: var(--accent-brass-dim);
+  padding-top: 3px;
+}
+
+.series__title {
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  background-image: linear-gradient(var(--accent-brass), var(--accent-brass));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1px;
+  transition:
+    color var(--duration-hover) var(--ease-hover),
+    background-size 350ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .series__title:hover {
+    color: var(--accent-brass);
+    background-size: 100% 1px;
+  }
+}
+
+.series__part .post__summary {
+  font-size: var(--text-small);
+}
+
+.series__part .post__meta {
+  margin-top: var(--space-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .series__panel,
+  .series__count::after,
+  .post__title a,
+  .series__title {
+    transition: none;
+  }
+}
