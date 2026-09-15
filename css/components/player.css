@@ -149,9 +149,12 @@
   50%      { stroke: var(--accent-brass); }
 }
 
-/* ---- Label ---- */
+/* ---- Panel: status, track name and volume ----
+   Shown on hover, or when something inside the player has keyboard focus.
+   :focus-visible (not :focus-within) so clicking the dial with a mouse
+   doesn't leave the panel stuck open after the pointer moves away. */
 
-.player__label {
+.player__panel {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -177,30 +180,100 @@
   color: var(--text-primary);
 }
 
-.player:hover .player__label,
-.player:focus-within .player__label,
-.player.is-resumable .player__label {
+.player:hover .player__panel,
+.player:has(:focus-visible) .player__panel,
+.player.is-resumable .player__panel {
   opacity: 1;
   transform: translateX(0);
+  pointer-events: auto;
 }
 
-/* Phones: no hover, and the label would cover content — show it only while
-   a resume is waiting */
+/* ---- Volume ---- */
+
+.player__volume {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+  color: var(--text-faint);
+}
+
+.player__volume-input {
+  --fill: 100%;
+  width: 6.5rem;
+  height: 1.25rem; /* taller hit area than the 2px track it draws */
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.player__volume-input::-webkit-slider-runnable-track {
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    var(--accent-brass) var(--fill),
+    var(--border-hairline-strong) var(--fill)
+  );
+}
+
+.player__volume-input::-moz-range-track {
+  height: 2px;
+  background: var(--border-hairline-strong);
+}
+
+.player__volume-input::-moz-range-progress {
+  height: 2px;
+  background: var(--accent-brass);
+}
+
+.player__volume-input::-webkit-slider-thumb {
+  width: 10px;
+  height: 10px;
+  margin-top: -4px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--text-primary);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.player__volume-input::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--text-primary);
+}
+
+.player__volume-input:focus-visible {
+  outline: 1.5px solid var(--accent-brass);
+  outline-offset: 2px;
+}
+
+/* Touch screens have no hover, and phone browsers (iOS in particular)
+   ignore page volume in favour of the hardware buttons — so the panel only
+   appears there while a resume is waiting, without the slider. */
 @media (hover: none) {
-  .player:hover .player__label,
-  .player:focus-within .player__label {
+  .player:hover .player__panel {
     opacity: 0;
+    pointer-events: none;
   }
 
-  .player.is-resumable .player__label {
+  .player.is-resumable .player__panel {
     opacity: 1;
+  }
+
+  .player__volume {
+    display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .player__dial,
   .player__signal,
-  .player__label,
+  .player__panel,
   .player__ring-progress {
     transition: none;
   }

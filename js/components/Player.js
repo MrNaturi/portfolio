@@ -15,9 +15,14 @@ export function Player() {
     <aside class="player" aria-label="Music player" hidden>
       <audio class="player__audio" preload="metadata" loop src="${track.src}"></audio>
 
-      <div class="player__label" aria-hidden="true">
-        <span class="player__status">Paused</span>
-        <span class="player__track">${track.title} · ${track.artist}</span>
+      <div class="player__panel">
+        <span class="player__status" aria-hidden="true">Paused</span>
+        <span class="player__track" aria-hidden="true">${track.title} · ${track.artist}</span>
+        <label class="player__volume">
+          <span class="player__volume-label">vol</span>
+          <input class="player__volume-input" type="range" min="0" max="100" step="1" value="100"
+                 aria-label="Volume" />
+        </label>
       </div>
 
       <button class="player__dial" type="button" aria-pressed="false"
@@ -69,6 +74,22 @@ export function initPlayer() {
   const dial = root.querySelector(".player__dial");
   const progress = root.querySelector(".player__ring-progress");
   const status = root.querySelector(".player__status");
+  const volume = root.querySelector(".player__volume-input");
+
+  // The slider's filled portion is drawn from this custom property
+  function renderVolume() {
+    const percent = Math.round(audio.volume * 100);
+    volume.value = String(percent);
+    volume.style.setProperty("--fill", `${percent}%`);
+  }
+
+  volume.addEventListener("input", () => {
+    audio.volume = Number(volume.value) / 100;
+  });
+  audio.addEventListener("volumechange", () => {
+    renderVolume();
+    writeState(audio);
+  });
 
   // Only show the player once the file is known to exist and be playable,
   // then pick up where the previous page left off
@@ -80,6 +101,7 @@ export function initPlayer() {
       if (!saved) return;
 
       audio.volume = saved.volume ?? 1;
+      renderVolume();
       if (saved.time < audio.duration) audio.currentTime = saved.time;
 
       if (saved.playing) {
