@@ -557,3 +557,77 @@
     transform: none;
   }
 }
+
+/* ---- Lens flip ---- */
+
+.lens {
+  margin-bottom: var(--space-7); /* room for the flip button under the lens */
+}
+
+.lens__card {
+  transition: transform 650ms var(--ease-in-out);
+}
+
+.lens.is-flipped .lens__card {
+  transform: rotateY(180deg);
+}
+
+.lens__flip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(-1 * var(--space-7));
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.75rem;
+  padding: 0 var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  white-space: nowrap;
+  color: var(--text-muted);
+  background: var(--bg-void-deep);
+  border: 1px solid var(--border-hairline-strong);
+  border-radius: var(--radius-control);
+  transform: translateX(-50%);
+  cursor: pointer;
+  transition: color var(--duration-hover) var(--ease-hover), border-color var(--duration-hover) var(--ease-hover);
+}
+
+.lens__flip-icon {
+  display: inline-block;
+  color: var(--accent-brass);
+  transition: transform 650ms var(--ease-in-out);
+}
+
+.lens.is-flipped .lens__flip-icon {
+  transform: rotate(-180deg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .lens__flip:hover {
+    color: var(--text-primary);
+    border-color: var(--accent-brass);
+  }
+}
+
+/* Reduced motion: no rotation, the portrait simply fades in over the
+   mirror photo */
+@media (prefers-reduced-motion: reduce) {
+  .lens__card,
+  .lens.is-flipped .lens__card,
+  .lens__flip-icon {
+    transform: none;
+    transition: none;
+  }
+
+  .lens__face--back {
+    transform: none;
+    opacity: 0;
+    transition: opacity 200ms linear;
+  }
+
+  .lens.is-flipped .lens__face--back {
+    opacity: 1;
+  }
+}

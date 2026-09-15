@@ -8,6 +8,7 @@ import {
   AboutOnward,
 } from "../components/about/AboutPage.js";
 import { initNameSay } from "../components/about/NameSay.js";
+import { initLensFlip } from "../components/about/LensFlip.js";
 
 renderShell();
 
@@ -26,3 +27,4 @@ document.querySelectorAll("main .section__index").forEach((el, i) => {
 });
 
 initNameSay();
+initLensFlip();
