@@ -20,7 +20,7 @@ function PlateFlagship(project) {
         ${MotionMark(project.accent)}
       </header>
 
-      <h3 class="plate__name" id="plate-${project.id}">${project.name}</h3>
+      <h3 class="plate__name" id="plate-${project.id}"><a class="plate__name-link" href="/projects#${project.id}">${project.name}</a></h3>
       <p class="plate__pitch">${project.pitch}</p>
       <p class="plate__description">${project.description}</p>
 
@@ -57,7 +57,7 @@ function PlateSupporting(project) {
   return `
     <article class="plate plate--supporting" aria-labelledby="plate-${project.id}">
       <span class="plate__serial">${project.serial}</span>
-      <h3 class="plate__name" id="plate-${project.id}">${project.name}</h3>
+      <h3 class="plate__name" id="plate-${project.id}"><a class="plate__name-link" href="/projects#${project.id}">${project.name}</a></h3>
       <p class="plate__meta">${meta}</p>
       <p class="plate__pitch">${project.pitch}</p>
       <p class="plate__stack"><span class="visually-hidden">Stack: </span>${project.stack.join(" · ")}</p>
