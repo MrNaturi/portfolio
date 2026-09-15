@@ -17,7 +17,7 @@ export const flagships = [
       "TriageRL explores whether reinforcement learning can improve patient prioritization in an overcrowded emergency department.",
       "I built a stochastic simulation where patients arrive, consume beds and staff time, wait in queues, and can deteriorate while waiting. A DQN proof of concept was evaluated before MaskablePPO was selected as the final agent, which was then deployed through a FastAPI backend and React dashboard with SQLite.",
     ],
-    role: "Researcher · ML engineer · Full-stack",
+    role: "Researcher · ML engineer · Full‑stack",
     stack: ["Python", "Gymnasium", "MaskablePPO", "DQN", "FastAPI", "React", "SQLite"],
     year: "2026",
     status: "Completed",
@@ -95,7 +95,7 @@ export const supporting = [
     ],
     contribution:
       "I worked on the HomePage, UserPage and ProfilePage, skills handling, dynamic reloading, skill uploads, and the Firestore collections.",
-    role: "Frontend / full-stack contributor",
+    role: "Frontend / full‑stack contributor",
     status: "Completed group project",
     stack: ["Flutter", "Riverpod", "Firebase"],
     fullStack: ["Flutter", "Dart", "Riverpod", "Firebase Authentication", "Firestore", "Firebase Storage"],
