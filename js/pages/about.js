@@ -12,6 +12,7 @@ import { initLensFlip } from "../components/about/LensFlip.js";
 import { initCuriosityPipeline } from "../components/about/CuriosityPipeline.js";
 import { initCoordinates } from "../components/about/Coordinates.js";
 import { initGuitar } from "../components/about/Guitar.js";
+import { initSketchPad } from "../components/about/SketchPad.js";
 
 renderShell();
 
@@ -34,3 +35,4 @@ initLensFlip();
 initCuriosityPipeline();
 initCoordinates();
 initGuitar();
+initSketchPad();
