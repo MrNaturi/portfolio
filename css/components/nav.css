@@ -22,7 +22,7 @@
 
 .nav-links a {
   color: var(--text-muted);
-  transition: color var(--duration-hover) var(--ease-out);
+  transition: color var(--duration-hover) var(--ease-hover);
 }
 
 .nav-links a:hover {

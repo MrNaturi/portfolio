@@ -54,10 +54,12 @@
   --space-7: 64px;
   --space-8: 96px;
 
-  /* ---- Section rhythm (unchanged) ---- */
+  /* ---- Section rhythm & layout ---- */
   --section-padding-desktop: var(--space-8);
   --section-padding-mobile: var(--space-7);
-  --content-max-width: 720px;
+  --content-max-width: 720px;  /* reading measure — prose, intros */
+  --layout-max-width: 1200px;  /* page frame — nav, hero, plate grids */
+  --gutter: clamp(1.25rem, 0.6rem + 3vw, 3rem); /* side padding, 20px → 48px */
 
   /* ---- Typography: families ---- */
   --font-display: 'IM Fell English', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
@@ -104,7 +106,10 @@
   --radius-control: 2px;
 
   /* ---- Motion: general ---- */
-  --ease-out: ease-out;
+  --ease-hover: ease;                                   /* colour/hover changes */
+  --ease-out: cubic-bezier(0.165, 0.84, 0.44, 1);       /* quart — entrances, reveals */
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);      /* long, settling entrances */
+  --ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);  /* cubic — on-screen movement */
   --duration-hover: 200ms;
   --duration-glow: 250ms;
   --duration-ripple: 400ms;    /* About page ripple — signal-teal */

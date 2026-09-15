@@ -24,7 +24,7 @@
 .footer-socials a {
   color: var(--text-muted);
   font-size: var(--text-small);
-  transition: color var(--duration-hover) var(--ease-out);
+  transition: color var(--duration-hover) var(--ease-hover);
 }
 
 .footer-links a:hover,
