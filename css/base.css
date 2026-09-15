@@ -70,6 +70,11 @@ a {
   }
 }
 
+/* The hidden attribute always wins, even over components that set display */
+[hidden] {
+  display: none !important;
+}
+
 /* Text for screen readers only */
 .visually-hidden {
   position: absolute;
