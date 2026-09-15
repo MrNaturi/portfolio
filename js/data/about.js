@@ -54,6 +54,7 @@ export const cities = [
     lat: 7.3775,
     lon: 3.947,
     timeZone: "Africa/Lagos",
+    zoneAbbr: "WAT",
   },
   {
     id: "kigali",
@@ -63,6 +64,7 @@ export const cities = [
     lat: -1.9441,
     lon: 30.0619,
     timeZone: "Africa/Kigali",
+    zoneAbbr: "CAT",
   },
 ];
 

@@ -10,6 +10,7 @@ import {
 import { initNameSay } from "../components/about/NameSay.js";
 import { initLensFlip } from "../components/about/LensFlip.js";
 import { initCuriosityPipeline } from "../components/about/CuriosityPipeline.js";
+import { initCoordinates } from "../components/about/Coordinates.js";
 
 renderShell();
 
@@ -30,3 +31,4 @@ document.querySelectorAll("main .section__index").forEach((el, i) => {
 initNameSay();
 initLensFlip();
 initCuriosityPipeline();
+initCoordinates();

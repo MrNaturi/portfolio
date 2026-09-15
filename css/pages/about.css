@@ -246,10 +246,6 @@
   }
 }
 
-.about-city + .about-city {
-  margin-top: var(--space-6);
-}
-
 .about-city__name {
   font-size: clamp(2.5rem, 2rem + 2vw, 3.5rem);
   line-height: 1;
@@ -722,5 +718,156 @@
   .about-log__line,
   .about-quote__caret {
     animation: none;
+  }
+}
+
+/* ---- Coordinates: toggle, visitor line, map ---- */
+
+.coords-toggle {
+  display: flex;
+  gap: var(--space-5);
+  margin-bottom: var(--space-5);
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.coords-toggle button {
+  min-height: 2.75rem;
+  padding: 0;
+  font: inherit;
+  color: var(--text-muted);
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  border: 0;
+  cursor: pointer;
+  transition: color var(--duration-hover) var(--ease-hover), background-size 250ms var(--ease-out);
+}
+
+.coords-toggle button[aria-pressed="true"] {
+  color: var(--accent-brass);
+  background-size: 100% 1px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .coords-toggle button:hover {
+    color: var(--text-primary);
+  }
+
+  .coords-toggle button[aria-pressed="true"]:hover {
+    color: var(--accent-brass);
+  }
+}
+
+.about-city {
+  animation: city-in 300ms var(--ease-out);
+}
+
+@keyframes city-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.coords-you {
+  margin: var(--space-5) 0 0;
+  padding-top: var(--space-4);
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-hairline);
+}
+
+.coords-you strong {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.coords-map {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: radial-gradient(ellipse at 50% 0%, var(--surface-plate-raised), var(--bg-void-deep) 70%);
+  border: 1px solid var(--border-hairline);
+}
+
+.coords-map__grid line {
+  stroke: rgba(201, 162, 106, 0.1);
+  stroke-width: 1;
+}
+
+.coords-map__eq,
+.coords-map text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.coords-map__eq {
+  fill: var(--text-faint);
+  opacity: 0.6;
+}
+
+.coords-map__arc {
+  fill: none;
+  stroke: var(--accent-brass);
+  stroke-width: 1.25;
+}
+
+.coords-map__km {
+  fill: var(--accent-brass-dim);
+}
+
+.coords-map__you-line {
+  stroke: var(--accent-brass-dim);
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+}
+
+.coords-map__city .coords-map__dot {
+  fill: var(--bg-void-deep);
+  stroke: var(--accent-brass);
+  stroke-width: 1.25;
+}
+
+.coords-map__city text {
+  fill: var(--text-faint);
+}
+
+.coords-map__city.is-selected .coords-map__dot {
+  fill: var(--accent-brass);
+}
+
+.coords-map__city.is-selected text {
+  fill: var(--text-primary);
+}
+
+.coords-map__halo {
+  fill: none;
+  stroke: var(--accent-brass);
+  opacity: 0.45;
+}
+
+.coords-map__you circle {
+  fill: var(--text-primary);
+}
+
+.coords-map__you text {
+  fill: var(--text-muted);
+}
+
+/* On phones the 640-wide map is drawn at about half size, so its labels
+   are set larger in map units to stay readable */
+@media (max-width: 40rem) {
+  .coords-map text {
+    font-size: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-city {
+    animation: none;
+  }
+
+  .coords-toggle button {
+    transition: none;
   }
 }

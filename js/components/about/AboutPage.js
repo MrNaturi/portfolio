@@ -89,7 +89,7 @@ function CityPanel(city) {
       <dl class="about-city__coords">
         <dt>lat</dt><dd>${Math.abs(city.lat).toFixed(4)}° ${city.lat >= 0 ? "N" : "S"}</dd>
         <dt>lon</dt><dd>${Math.abs(city.lon).toFixed(4)}° ${city.lon >= 0 ? "E" : "W"}</dd>
-        <dt>local time</dt><dd data-city-time="${city.timeZone}">—</dd>
+        <dt>local time</dt><dd data-city-time="${city.timeZone}" data-zone="${city.zoneAbbr}">—</dd>
       </dl>
     </div>
   `;
