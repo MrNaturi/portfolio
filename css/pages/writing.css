@@ -31,6 +31,66 @@
   color: var(--text-muted);
 }
 
+/* ---- Filter ----
+   A strip of flat toggles on a hairline, like selector keys on an
+   instrument. The pressed one reads brass with an underline. */
+
+.writing-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-5);
+  margin-top: var(--space-6);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-hairline);
+}
+
+.writing-filter__option {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  min-height: 2.75rem;
+  padding: 0;
+  font: inherit;
+  color: var(--text-muted);
+  background: linear-gradient(currentColor, currentColor) 0 calc(100% - 8px) / 0 1px no-repeat;
+  border: 0;
+  cursor: pointer;
+  transition:
+    color var(--duration-hover) var(--ease-hover),
+    background-size 250ms var(--ease-out);
+}
+
+.writing-filter__count {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  color: var(--text-faint);
+}
+
+.writing-filter__option[aria-pressed="true"] {
+  color: var(--accent-brass);
+  background-size: 100% 1px;
+}
+
+.writing-filter__option[aria-pressed="true"] .writing-filter__count {
+  color: var(--accent-brass-dim);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .writing-filter__option:hover {
+    color: var(--text-primary);
+  }
+
+  .writing-filter__option[aria-pressed="true"]:hover {
+    color: var(--accent-brass);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .writing-filter__option {
+    transition: none;
+  }
+}
+
 /* ---- Groups ---- */
 
 .writing-group {
