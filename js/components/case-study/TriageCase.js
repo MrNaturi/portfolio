@@ -89,6 +89,107 @@ export function CaseResults() {
   `;
 }
 
+// ---- Architecture ----
+// Drawn as inline SVG so it inherits the page's type and colour tokens.
+// Two layouts: wide (left to right) and narrow (top to bottom), because a
+// scaled-down wide diagram is unreadable on a phone.
+
+function node(x, y, w, h, title, sub, accent = false) {
+  return `
+    <g class="arch__node${accent ? " arch__node--accent" : ""}">
+      <rect x="${x}" y="${y}" width="${w}" height="${h}" />
+      <text class="arch__title" x="${x + 16}" y="${y + 30}">${title}</text>
+      <text class="arch__sub" x="${x + 16}" y="${y + 52}">${sub}</text>
+    </g>
+  `;
+}
+
+function arrow(id, x1, y1, x2, y2, label, lx, ly, anchor = "middle") {
+  return `
+    <g class="arch__edge">
+      <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" marker-end="url(#${id})" />
+      ${label ? `<text class="arch__label" x="${lx}" y="${ly}" text-anchor="${anchor}">${label}</text>` : ""}
+    </g>
+  `;
+}
+
+// Each diagram needs its own marker id: only one of the two is displayed,
+// and a marker defined inside a display:none SVG doesn't render elsewhere.
+const defs = (id) => `
+  <defs>
+    <marker id="${id}" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L8,4 L0,8" fill="none" />
+    </marker>
+  </defs>
+`;
+
+function DiagramWide() {
+  return `
+    <svg class="arch arch--wide" viewBox="0 0 780 290" role="img" aria-labelledby="arch-desc">
+      ${defs("arch-head-wide")}
+      ${node(10, 40, 200, 76, "React dashboard", "Vite SPA")}
+      ${node(290, 40, 200, 76, "FastAPI backend", "+ SQLite")}
+      ${node(570, 40, 200, 76, "MaskablePPO agent", "Stable-Baselines3", true)}
+      ${node(570, 200, 200, 76, "ED simulation", "Gymnasium")}
+      ${arrow("arch-head-wide", 212, 68, 286, 68, "REST", 249, 58)}
+      ${arrow("arch-head-wide", 288, 90, 214, 90, "", 0, 0)}
+      ${arrow("arch-head-wide", 492, 68, 566, 68, "predict", 529, 58)}
+      ${arrow("arch-head-wide", 568, 90, 494, 90, "", 0, 0)}
+      ${arrow("arch-head-wide", 670, 198, 670, 120, "trained in", 682, 164, "start")}
+    </svg>
+  `;
+}
+
+function DiagramNarrow() {
+  return `
+    <svg class="arch arch--narrow" viewBox="0 0 320 520" role="img" aria-labelledby="arch-desc">
+      ${defs("arch-head-narrow")}
+      ${node(20, 10, 280, 76, "React dashboard", "Vite SPA")}
+      ${node(20, 150, 280, 76, "FastAPI backend", "+ SQLite")}
+      ${node(20, 290, 280, 76, "MaskablePPO agent", "Stable-Baselines3", true)}
+      ${node(20, 430, 280, 76, "ED simulation", "Gymnasium")}
+      ${arrow("arch-head-narrow", 140, 88, 140, 146, "REST", 196, 122, "start")}
+      ${arrow("arch-head-narrow", 180, 148, 180, 90, "", 0, 0)}
+      ${arrow("arch-head-narrow", 140, 228, 140, 286, "predict", 196, 262, "start")}
+      ${arrow("arch-head-narrow", 180, 288, 180, 230, "", 0, 0)}
+      ${arrow("arch-head-narrow", 160, 428, 160, 370, "trained in", 172, 404, "start")}
+    </svg>
+  `;
+}
+
+export function CaseArchitecture() {
+  return `
+    <section class="section case-arch" aria-labelledby="arch-title">
+      ${sectionHead("How it works", "arch-title")}
+      <figure class="case-arch__figure">
+        ${DiagramWide()}
+        ${DiagramNarrow()}
+        <figcaption id="arch-desc" class="case-note">
+          The React dashboard talks to a FastAPI backend over REST. The backend
+          stores patients in SQLite and asks the MaskablePPO agent who to treat
+          next; the agent was trained in a Gymnasium simulation of the emergency
+          department, with a rule-based fallback if no model is available.
+        </figcaption>
+      </figure>
+
+      <dl class="case-arch__parts">
+        ${data.architecture
+          .map(
+            (part) => `
+          <div class="case-arch__part">
+            <dt>
+              <span class="case-arch__name">${part.name}</span>
+              <code>${part.file}</code>
+            </dt>
+            <dd>${part.text}</dd>
+          </div>`
+          )
+          .join("")}
+      </dl>
+    </section>
+  `;
+}
+
 export function CaseFindings() {
   return `
     <section class="section case-findings" aria-labelledby="findings-title">

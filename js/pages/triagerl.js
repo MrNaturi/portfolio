@@ -1,12 +1,13 @@
 import { render, renderShell } from "./shell.js";
 import { initMotionMarks } from "../components/MotionMark.js";
-import { CaseHero, CaseResults, CaseFindings, CaseNext } from "../components/case-study/TriageCase.js";
+import { CaseHero, CaseResults, CaseArchitecture, CaseFindings, CaseNext } from "../components/case-study/TriageCase.js";
 
 renderShell();
 
 render({
   "case-hero-root": CaseHero,
   "case-results-root": CaseResults,
+  "case-arch-root": CaseArchitecture,
   "case-findings-root": CaseFindings,
   "case-next-root": CaseNext,
 });

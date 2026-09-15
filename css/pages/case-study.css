@@ -325,6 +325,127 @@
   vertical-align: 0.05em;
 }
 
+/* ---- Architecture ---- */
+
+.case-arch__figure {
+  margin: 0 0 var(--space-7);
+}
+
+.arch {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.arch--wide {
+  max-width: 52rem;
+}
+
+.arch--narrow {
+  max-width: 22rem;
+  display: none;
+}
+
+@media (max-width: 40rem) {
+  .arch--wide {
+    display: none;
+  }
+
+  .arch--narrow {
+    display: block;
+  }
+}
+
+.arch__node rect {
+  fill: var(--surface-plate);
+  stroke: var(--border-hairline-strong);
+  stroke-width: 1;
+}
+
+.arch__node--accent rect {
+  stroke: var(--case-accent);
+}
+
+.arch__title {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: var(--weight-medium);
+  fill: var(--text-primary);
+}
+
+.arch__sub,
+.arch__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  fill: var(--text-faint);
+}
+
+.arch__label {
+  fill: var(--accent-brass-dim);
+}
+
+.arch__edge line,
+.arch marker path {
+  stroke: var(--accent-brass);
+  stroke-width: 1;
+}
+
+.case-arch__figure .case-note {
+  max-width: 64ch;
+  margin-top: var(--space-4);
+}
+
+.case-arch__parts {
+  display: grid;
+  gap: var(--space-5) var(--space-6);
+  margin: 0;
+}
+
+@media (min-width: 48rem) {
+  .case-arch__parts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 72rem) {
+  .case-arch__parts {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.case-arch__part {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-hairline);
+}
+
+.case-arch__part dt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.case-arch__name {
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.case-arch__part code {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  color: var(--accent-brass-dim);
+}
+
+.case-arch__part dd {
+  margin: 0;
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
 /* ---- Findings ---- */
 
 .case-findings__list {
