@@ -1,20 +1,24 @@
 .site-footer {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
-  padding: var(--section-padding-desktop) var(--space-5);
+  align-items: flex-start;
+  gap: var(--space-5) var(--space-6);
+  padding: var(--space-7) var(--gutter) var(--space-6);
   border-top: 1px solid var(--border-hairline);
 }
 
 .footer-nav-group {
   display: flex;
-  gap: var(--space-6);
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-6);
 }
 
 .footer-links,
 .footer-socials {
   display: flex;
-  gap:  var(--space-4);
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -22,12 +26,25 @@
 
 .footer-links a,
 .footer-socials a {
+  display: inline-block;
+  padding-block: var(--space-1);
   color: var(--text-muted);
   font-size: var(--text-small);
   transition: color var(--duration-hover) var(--ease-hover);
 }
 
-.footer-links a:hover,
-.footer-socials a:hover {
-  color: var(--accent-brass);
+@media (hover: hover) and (pointer: fine) {
+  .footer-links a:hover,
+  .footer-socials a:hover {
+    color: var(--accent-brass);
+  }
+}
+
+/* Phones: stack wordmark over the two link groups instead of forcing
+   eight items onto one row. */
+@media (max-width: 40rem) {
+  .site-footer,
+  .footer-nav-group {
+    flex-direction: column;
+  }
 }
