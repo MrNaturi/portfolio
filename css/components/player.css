@@ -1,0 +1,217 @@
+/* ==========================================================================
+   Player — a brass dial fixed bottom-right. Flat, bordered, no shadow kit.
+   Teal is used only for the signal dot while audio is actually playing:
+   the site's "transmission" colour, meaning something is being sent.
+   ========================================================================== */
+
+.player {
+  position: fixed;
+  right: max(var(--space-4), env(safe-area-inset-right, 0px));
+  bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* ---- Dial ---- */
+
+.player__dial {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  padding: 0;
+  color: var(--accent-brass);
+  background: var(--bg-void-deep);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 150ms var(--ease-out);
+}
+
+.player__dial:active {
+  transform: scale(0.96);
+}
+
+.player__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg); /* progress starts at 12 o'clock */
+}
+
+.player__ring-track,
+.player__ring-progress {
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.player__ring-track {
+  stroke: var(--border-hairline-strong);
+}
+
+.player__ring-progress {
+  stroke: var(--accent-brass);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 260ms linear;
+}
+
+.player__icon {
+  width: 1rem;
+  height: 1rem;
+  fill: currentColor;
+}
+
+.player__icon-pause,
+.player.is-playing .player__icon-play {
+  display: none;
+}
+
+.player.is-playing .player__icon-pause {
+  display: inline;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .player__dial:hover {
+    color: var(--text-primary);
+  }
+}
+
+/* Focus: a brass ring outside the dial instead of corner brackets, which
+   would look wrong round a circle */
+.player__dial:focus-visible {
+  outline: 1.5px solid var(--accent-brass);
+  outline-offset: 4px;
+}
+
+.player__dial:focus-visible::after {
+  content: none;
+}
+
+/* ---- Signal dot: teal, top-right of the dial, only while playing ---- */
+
+.player__signal {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-teal);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+}
+
+.player__signal::before,
+.player__signal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--accent-teal);
+  opacity: 0;
+}
+
+.player.is-playing .player__signal {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.player.is-playing .player__signal::before,
+.player.is-playing .player__signal::after {
+  animation: player-signal var(--duration-signal) var(--ease-out) infinite;
+}
+
+.player.is-playing .player__signal::after {
+  animation-delay: 280ms;
+}
+
+/* Same double-pulse rhythm as Afroglot's signal mark, defined here so the
+   player works on pages that don't load selected-work.css */
+@keyframes player-signal {
+  0%   { transform: scale(1);   opacity: 0.8; }
+  35%  { transform: scale(3);   opacity: 0; }
+  100% { transform: scale(3);   opacity: 0; }
+}
+
+/* Resume available but the browser blocked autoplay: a slow brass breath
+   on the ring invites a tap */
+.player.is-resumable .player__ring-track {
+  animation: player-breathe 2400ms var(--ease-in-out) infinite;
+}
+
+@keyframes player-breathe {
+  0%, 100% { stroke: var(--border-hairline-strong); }
+  50%      { stroke: var(--accent-brass); }
+}
+
+/* ---- Label ---- */
+
+.player__label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-label);
+  white-space: nowrap;
+  background: var(--bg-void-deep);
+  border: 1px solid var(--border-hairline);
+  opacity: 0;
+  transform: translateX(6px);
+  pointer-events: none;
+  transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out);
+}
+
+.player__status {
+  color: var(--text-faint);
+}
+
+.player__track {
+  color: var(--text-primary);
+}
+
+.player:hover .player__label,
+.player:focus-within .player__label,
+.player.is-resumable .player__label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Phones: no hover, and the label would cover content — show it only while
+   a resume is waiting */
+@media (hover: none) {
+  .player:hover .player__label,
+  .player:focus-within .player__label {
+    opacity: 0;
+  }
+
+  .player.is-resumable .player__label {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .player__dial,
+  .player__signal,
+  .player__label,
+  .player__ring-progress {
+    transition: none;
+  }
+
+  .player__dial:active {
+    transform: none;
+  }
+
+  .player.is-playing .player__signal::before,
+  .player.is-playing .player__signal::after,
+  .player.is-resumable .player__ring-track {
+    animation: none;
+  }
+}
