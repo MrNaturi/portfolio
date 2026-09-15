@@ -446,6 +446,172 @@
   color: var(--text-muted);
 }
 
+/* ---- Live console ----
+   A plain instrument window: brass-ruled bar, dark screen. The embedded
+   app keeps its own look; the frame just sits it inside the page. */
+
+.case-lede strong {
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.live-console {
+  border: 1px solid var(--border-hairline-strong);
+  background: var(--bg-void-deep);
+}
+
+.live-console__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.live-console__lights {
+  display: inline-flex;
+  gap: 5px;
+}
+
+.live-console__lights i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid var(--border-hairline-strong);
+}
+
+.live-console__host {
+  color: var(--text-muted);
+}
+
+.live-console__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Status dot: brass while waking, ember once live */
+.live-console__status::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border-hairline-strong);
+}
+
+.live-console.is-loading .live-console__status::before {
+  background: var(--accent-brass);
+  animation: console-wait 1.2s var(--ease-in-out) infinite;
+}
+
+.live-console.is-live .live-console__status::before {
+  background: var(--case-accent);
+}
+
+@keyframes console-wait {
+  0%, 100% { opacity: 0.3; }
+  50%      { opacity: 1; }
+}
+
+.live-console__newtab {
+  margin-left: auto;
+  padding-block: var(--space-1);
+  color: var(--text-muted);
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 1px;
+  transition: color var(--duration-hover) var(--ease-hover);
+}
+
+.live-console.is-slow .live-console__newtab {
+  color: var(--accent-brass);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .live-console__newtab:hover {
+    color: var(--accent-brass);
+  }
+}
+
+.live-console__screen {
+  position: relative;
+  height: clamp(32rem, 80vh, 52rem);
+}
+
+.live-console__idle {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-4);
+  height: 100%;
+  padding: var(--space-5);
+  text-align: center;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 23px, var(--grid-line) 23px 24px),
+    repeating-linear-gradient(90deg, transparent 0 23px, var(--grid-line) 23px 24px);
+}
+
+.live-console__prompt {
+  max-width: 40ch;
+  margin: 0;
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
+.live-console__narrow {
+  display: none;
+  max-width: 32ch;
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.live-console__narrow a {
+  color: var(--accent-brass);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.live-console__frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: var(--bg-void-deep);
+}
+
+/* Phones: the dashboard is a desktop layout, so skip the embed */
+@media (max-width: 48rem) {
+  .live-console__screen {
+    height: auto;
+  }
+
+  .live-console__idle {
+    padding-block: var(--space-7);
+  }
+
+  .live-console__prompt,
+  .live-console__launch,
+  .live-console__status {
+    display: none;
+  }
+
+  .live-console__narrow {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-console.is-loading .live-console__status::before {
+    animation: none;
+  }
+}
+
 /* ---- Findings ---- */
 
 .case-findings__list {

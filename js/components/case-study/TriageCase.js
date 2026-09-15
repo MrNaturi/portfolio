@@ -1,5 +1,6 @@
 import * as data from "../../data/triagerl.js";
 import { MotionMark } from "../MotionMark.js";
+import { LiveConsole } from "./LiveConsole.js";
 
 // Section numbers are filled in by the page script in document order, so
 // sections can be added or reordered without renumbering by hand.
@@ -28,7 +29,8 @@ export function CaseHero() {
       <p class="case-hero__summary">${data.summary}</p>
 
       <ul class="case-hero__actions">
-        <li><a class="case-button case-button--primary" href="${data.links.demo}" rel="noopener">Watch the demo<span class="visually-hidden"> (Google Drive)</span></a></li>
+        <li><a class="case-button case-button--primary" href="#live">Try the live system</a></li>
+        <li><a class="case-button" href="${data.links.demo}" rel="noopener">Watch the demo<span class="visually-hidden"> (Google Drive)</span></a></li>
         <li><a class="case-button" href="${data.links.github}" rel="noopener">Source on GitHub</a></li>
       </ul>
 
@@ -186,6 +188,25 @@ export function CaseArchitecture() {
           )
           .join("")}
       </dl>
+    </section>
+  `;
+}
+
+export function CaseLive() {
+  return `
+    <section class="section case-live" id="live" aria-labelledby="live-title">
+      ${sectionHead("Try it", "live-title")}
+      <p class="case-lede">
+        The deployed system, running here. Turn on <strong>Demo mode</strong> on the
+        queue board to stream synthetic arrivals and watch the agent prioritize, or
+        register a patient and ask <strong>Who's next?</strong>
+      </p>
+      ${LiveConsole({
+        url: data.links.live,
+        title: "TriageRL live dashboard",
+        host: new URL(data.links.live).host,
+        note: "Hosted on a free tier that sleeps when idle, so the first load can take about a minute.",
+      })}
     </section>
   `;
 }
