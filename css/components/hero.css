@@ -1,32 +1,42 @@
 .hero {
-    min-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
-    padding: 0 var(--space-5);
+  position: relative;
+  isolation: isolate; /* own stacking context, so the starfield's z-index: -1
+                         stays inside the hero instead of the page root */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 88vh;   /* fallback */
+  min-height: 88svh;  /* excludes the mobile browser bar, so no jump */
+  padding-block: var(--space-8);
+  /* Centre a --layout-max-width frame while keeping at least the gutter */
+  padding-inline: max(var(--gutter), (100% - var(--layout-max-width)) / 2);
 }
 
 .hero__eyebrow {
-    font-size: var(--text-small);
-    color: var(--text-faint);
-    margin-bottom: var(--space-3);
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
 }
 
 .hero__title {
-    font-size: var(--text-hero);
-    font-weight: var(--weight-display);
-    line-height: var(--leading-tight);
-    color: var(--text-primary);
-    margin-bottom: var(--space-4);
+  max-width: 15ch;
+  margin-bottom: var(--space-5);
+  font-size: var(--text-hero);
+  line-height: var(--leading-display);
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
 }
 
 .hero__emphasis {
-    color: var(--accent-brass);
+  font-style: italic; /* IM Fell's italic is the most engraved-looking cut */
+  color: var(--accent-brass);
 }
 
 .hero__intro {
-    font-size: var(--text-body);
-    color: var(--text-muted);
-    max-width: var(--content-max-width);
+  max-width: 60ch;
+  margin: 0;
+  font-size: clamp(var(--text-body), 0.95rem + 0.25vw, 1.125rem);
+  color: var(--text-muted);
 }
