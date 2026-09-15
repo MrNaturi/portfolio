@@ -1,0 +1,409 @@
+/* ==========================================================================
+   Resume — the calm page. Same observatory ground, but no instruments:
+   a sticky section rail, a mono date column and plain, scannable entries.
+   ========================================================================== */
+
+.resume {
+  padding-inline: max(var(--gutter), (100% - var(--layout-max-width)) / 2);
+}
+
+/* ---- Intro ---- */
+
+.resume-intro {
+  display: grid;
+  gap: var(--space-5);
+  padding-block: var(--space-7) var(--space-6);
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+@media (min-width: 60rem) {
+  .resume-intro {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: var(--space-6);
+    padding-top: var(--space-8);
+  }
+}
+
+.resume-intro__eyebrow {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+}
+
+.resume-intro__name {
+  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4rem);
+  line-height: var(--leading-display);
+}
+
+.resume-intro__summary {
+  max-width: 52ch;
+  margin: var(--space-3) 0 0;
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+  color: var(--text-muted);
+}
+
+.resume-intro__summary em {
+  font-style: normal;
+  color: var(--text-primary);
+}
+
+.resume-intro__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+@media (min-width: 60rem) {
+  .resume-intro__actions {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+}
+
+.resume-intro__updated {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  color: var(--text-faint);
+}
+
+/* ---- Layout: rail + main ---- */
+
+.resume-layout {
+  display: grid;
+  gap: var(--space-6);
+  padding-block: var(--space-6) var(--space-8);
+}
+
+@media (min-width: 60rem) {
+  .resume-layout {
+    grid-template-columns: 13.5rem minmax(0, 1fr);
+    gap: var(--space-7);
+  }
+}
+
+.resume-rail {
+  display: grid;
+  gap: var(--space-5);
+  align-content: start;
+}
+
+@media (min-width: 60rem) {
+  .resume-rail {
+    position: sticky;
+    top: var(--space-5);
+    align-self: start;
+  }
+}
+
+.resume-rail__label {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-label);
+  color: var(--accent-brass-dim);
+}
+
+.resume-rail ul {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
+.resume-rail a {
+  display: inline-block;
+  padding-block: 2px;
+  transition: color var(--duration-hover) var(--ease-hover);
+}
+
+@media (hover: hover) {
+  .resume-rail a:hover {
+    color: var(--accent-brass);
+  }
+}
+
+/* The section list only earns its place beside the content */
+.resume-toc {
+  display: none;
+}
+
+@media (min-width: 60rem) {
+  .resume-toc {
+    display: block;
+  }
+}
+
+.resume-reach ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+}
+
+@media (min-width: 60rem) {
+  .resume-reach ul {
+    display: grid;
+  }
+}
+
+.resume-reach__email {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+}
+
+/* ---- Sections ---- */
+
+.resume-sec + .resume-sec {
+  margin-top: var(--space-7);
+}
+
+.resume-sec__head {
+  margin-bottom: var(--space-4);
+  scroll-margin-top: var(--space-5);
+}
+
+.resume-sec {
+  scroll-margin-top: var(--space-5);
+}
+
+.resume-sec__title {
+  font-size: clamp(1.625rem, 1.3rem + 1.2vw, 2.125rem);
+}
+
+/* ---- Entries: date column + body ---- */
+
+.resume-entry {
+  display: grid;
+  gap: var(--space-1);
+  padding-block: var(--space-4);
+  border-top: 1px solid var(--border-hairline);
+}
+
+.resume-entry:first-of-type {
+  padding-top: 0;
+  border-top: 0;
+}
+
+@media (min-width: 40rem) {
+  .resume-entry {
+    grid-template-columns: 9.5rem minmax(0, 1fr);
+    gap: var(--space-5);
+  }
+}
+
+.resume-entry__when {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: start;
+  gap: 0 var(--space-2);
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: 1.8;
+  color: var(--text-faint);
+}
+
+@media (min-width: 40rem) {
+  .resume-entry__when {
+    flex-direction: column;
+  }
+}
+
+.resume-now {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--accent-brass);
+}
+
+.resume-now::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-brass);
+  box-shadow: 0 0 0 3px rgba(201, 162, 106, 0.15);
+}
+
+.resume-entry__title {
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  font-weight: var(--weight-semibold);
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+.resume-entry__where {
+  margin: 2px 0 0;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+}
+
+.resume-entry__note {
+  margin: var(--space-2) 0 0;
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+}
+
+.resume-entry__points {
+  display: grid;
+  gap: 6px;
+  max-width: 64ch;
+  margin: var(--space-2) 0 0;
+  padding-left: 1.1em;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+}
+
+.resume-entry__points li::marker {
+  color: var(--accent-brass-dim);
+}
+
+/* Links inside entries: quiet underline, brass on hover */
+.resume-entry a {
+  text-decoration: underline;
+  text-decoration-color: var(--border-hairline-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color var(--duration-hover) var(--ease-hover),
+    text-decoration-color var(--duration-hover) var(--ease-hover);
+}
+
+@media (hover: hover) {
+  .resume-entry a:hover {
+    color: var(--accent-brass);
+    text-decoration-color: currentColor;
+  }
+}
+
+/* ---- Work done inside a role ---- */
+
+.resume-work {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.resume-work__item {
+  padding-left: var(--space-3);
+  border-left: 1px solid var(--border-hairline-strong);
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+}
+
+.resume-work__item p {
+  margin: 0;
+  max-width: 62ch;
+}
+
+.resume-work__name {
+  color: var(--text-primary);
+  font-weight: var(--weight-medium);
+}
+
+.resume-tag {
+  margin-left: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-regular);
+  color: var(--text-faint);
+}
+
+/* ---- Projects ---- */
+
+.resume-project[data-accent] .resume-entry__title::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: var(--space-2);
+  border-radius: 50%;
+  vertical-align: 0.12em;
+  background: var(--accent);
+}
+
+.resume-project[data-accent="ember"] { --accent: var(--accent-ember); }
+.resume-project[data-accent="teal"] { --accent: var(--accent-teal); }
+
+.resume-readout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin: var(--space-3) 0 0;
+}
+
+.resume-readout div {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.resume-readout dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 1.125rem;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.resume-readout dt {
+  font-size: var(--text-meta);
+  color: var(--text-faint);
+}
+
+.resume-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.resume-stack li {
+  padding: 3px 8px;
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-control);
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  color: var(--text-faint);
+}
+
+/* ---- Skills ---- */
+
+.resume-skills {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.resume-skills div {
+  display: grid;
+  gap: 2px;
+}
+
+@media (min-width: 40rem) {
+  .resume-skills div {
+    grid-template-columns: 9.5rem minmax(0, 1fr);
+    gap: var(--space-5);
+  }
+}
+
+.resume-skills dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: 1.9;
+  color: var(--text-faint);
+}
+
+.resume-skills dd {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+}
