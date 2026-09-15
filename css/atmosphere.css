@@ -1,0 +1,49 @@
+/* ==========================================================================
+   Atmosphere — the star-chart ground every page sits on.
+   Two fixed layers on <body>, both pointer-events: none:
+     ::before  brass coordinate grid (declination circles + RA meridians)
+     ::after   film grain, laid over everything at very low opacity
+   ========================================================================== */
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ---- Coordinate grid ----
+   The celestial pole sits above the top edge of the viewport, so the
+   declination circles read as gentle arcs and the meridians fan down from
+   it — the projection of an old star atlas, not a flat CSS grid.
+   Masked to fade toward the edges so it never frames the page. */
+body::before {
+  z-index: -2;
+  --pole: 50% -55vh;
+  background:
+    repeating-radial-gradient(
+      circle at var(--pole),
+      transparent 0 calc(var(--grid-ring) - 1px),
+      var(--grid-line) calc(var(--grid-ring) - 1px) var(--grid-ring)
+    ),
+    repeating-conic-gradient(
+      from 0deg at var(--pole),
+      var(--grid-line) 0 0.08deg,
+      transparent 0.08deg 7.5deg
+    ),
+    radial-gradient(ellipse 120% 90% at 50% 0%, var(--surface-plate-raised) 0%, transparent 60%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 35%, #000 20%, transparent 85%);
+          mask-image: radial-gradient(ellipse 90% 80% at 50% 35%, #000 20%, transparent 85%);
+}
+
+/* ---- Grain ----
+   SVG fractal noise, tiled. Sits above content at ~5% so flat plates and
+   the void read as printed paper rather than a screen fill. */
+body::after {
+  z-index: 100;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+  mix-blend-mode: overlay;
+}
