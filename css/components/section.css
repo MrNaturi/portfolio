@@ -1,0 +1,47 @@
+/* ==========================================================================
+   Section frame — shared by every Home section after the hero.
+   A hairline rule with a mono index on it, like a plate number engraved
+   on the edge of a chart, then a display heading.
+   ========================================================================== */
+
+.section {
+  padding-block: var(--section-padding-mobile);
+  padding-inline: max(var(--gutter), (100% - var(--layout-max-width)) / 2);
+}
+
+@media (min-width: 48rem) {
+  .section {
+    padding-block: var(--section-padding-desktop);
+  }
+}
+
+.section__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+/* Index sits on the rule: "01" then a hairline running to the edge */
+.section__index {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--accent-brass-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.section__head::after {
+  content: "";
+  flex: 1;
+  align-self: center;
+  height: 1px;
+  background: var(--border-hairline);
+}
+
+.section__title {
+  flex: none;
+  font-size: var(--text-h2);
+  line-height: var(--leading-tight);
+}

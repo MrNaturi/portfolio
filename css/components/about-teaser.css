@@ -1,0 +1,58 @@
+.about-teaser__body {
+  display: grid;
+  gap: var(--space-5);
+}
+
+@media (min-width: 56rem) {
+  .about-teaser__body {
+    grid-template-columns: 1.6fr 1fr;
+    gap: var(--space-7);
+    align-items: end;
+  }
+}
+
+/* The first sentence reads as a display line, the rest as a quieter aside */
+.about-teaser__lede {
+  max-width: 24ch;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem);
+  line-height: 1.15;
+  color: var(--text-primary);
+  text-wrap: balance;
+}
+
+.about-teaser__lede em {
+  color: var(--accent-brass);
+}
+
+.about-teaser__aside {
+  max-width: 44ch;
+}
+
+.about-teaser__aside p {
+  margin: 0 0 var(--space-4);
+  color: var(--text-muted);
+}
+
+/* Teal is Afroglot's signal colour, and also the About page's (name
+   pronunciation ripple) — so links that lead to About carry it on hover. */
+.about-teaser__link {
+  display: inline-block;
+  padding-block: var(--space-1);
+  color: var(--text-primary);
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 1px;
+  transition:
+    color var(--duration-hover) var(--ease-hover),
+    background-size var(--duration-hover) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .about-teaser__link:hover {
+    color: var(--accent-teal);
+    background-size: 40% 1px;
+  }
+}
