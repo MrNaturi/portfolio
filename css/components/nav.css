@@ -1,34 +1,50 @@
 .site-nav {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
-  padding: var(--space-4) var(--space-5);
+  align-items: baseline;
+  gap: var(--space-2) var(--space-5);
+  padding: var(--space-4) var(--gutter);
   border-bottom: 1px solid var(--border-hairline);
 }
 
 .wordmark {
   font-family: var(--font-display);
   font-size: var(--text-h3);
+  line-height: 1;
   color: var(--text-primary);
 }
 
 .nav-links {
   display: flex;
-  gap: var(--space-4);
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
 .nav-links a {
+  display: inline-block;
+  padding-block: var(--space-2); /* taller tap target without shifting layout */
   color: var(--text-muted);
+  font-size: var(--text-small);
+  background-image: linear-gradient(var(--accent-brass), var(--accent-brass));
+  background-repeat: no-repeat;
+  background-position: 0 calc(100% - 4px);
+  background-size: 0 1px;
   transition: color var(--duration-hover) var(--ease-hover);
 }
 
-.nav-links a:hover {
-  color: var(--accent-brass-dim);
+@media (hover: hover) and (pointer: fine) {
+  .nav-links a:hover {
+    color: var(--accent-brass);
+  }
 }
 
-.nav-links li.active a {
+/* Current page: brass text plus a fixed hairline underline, so it reads
+   as "you are here" rather than a stuck hover. */
+.nav-links a[aria-current="page"] {
   color: var(--accent-brass);
+  background-size: 100% 1px;
 }
