@@ -121,8 +121,7 @@ export const supporting = [
     role: "Frontend developer",
     status: "Shipped",
     stack: ["HTML", "CSS", "JavaScript"],
-    // TODO: confirm year
-    year: null,
+    year: "2026",
     links: [
       { label: "Live", href: "https://cupids-board.vercel.app/" },
       { label: "GitHub", href: "https://github.com/MrNaturi/Cupids_Board" },
