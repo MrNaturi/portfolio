@@ -1,7 +1,8 @@
 import { Footer } from "../components/Footer.js";
 import { Nav } from "../components/Nav.js";
 import { Hero } from "../components/Hero.js";
-import { StarfieldCanvas, initStarfield } from "../components/Starfield.js";
+import { initStarfield } from "../components/Starfield.js";
+import { initObservationLog } from "../components/ObservationLog.js";
 
 const navRoot = document.getElementById("nav-root")
 const footerRoot = document.getElementById("footer-root")
@@ -11,3 +12,4 @@ navRoot.innerHTML = Nav(window.location.pathname)
 footerRoot.innerHTML = Footer()
 heroRoot.innerHTML = Hero();
 initStarfield();
+initObservationLog();

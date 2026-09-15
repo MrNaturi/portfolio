@@ -49,3 +49,22 @@
     flex-direction: column;
   }
 }
+
+.footer-mark {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.observation-log {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums; /* digits don't shift as minutes tick */
+}
+
+.observation-log__sep {
+  color: var(--accent-brass-dim);
+}
