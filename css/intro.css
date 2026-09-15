@@ -1,0 +1,38 @@
+/* ==========================================================================
+   First-visit intro — one orchestrated moment, then out of the way.
+   Active only while <html data-intro="play"> (set inline in <head>, once per
+   session, never with reduced motion). ~1.4s total:
+     0ms     coordinate grid settles in
+     250ms   stars fade in brightest-first (canvas, Starfield.js)
+     450ms+  hero lines rise in, staggered
+   ========================================================================== */
+
+@keyframes intro-grid {
+  from { opacity: 0; transform: scale(1.04); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes intro-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+[data-intro="play"] body::before {
+  animation: intro-grid 1200ms var(--ease-out-expo) both;
+}
+
+[data-intro="play"] .hero > :is(.hero__eyebrow, .hero__title, .hero__intro) {
+  animation: intro-rise 700ms var(--ease-out) both;
+}
+
+[data-intro="play"] .hero__eyebrow { animation-delay: 450ms; }
+[data-intro="play"] .hero__title   { animation-delay: 560ms; }
+[data-intro="play"] .hero__intro   { animation-delay: 720ms; }
+
+/* Belt and braces: the inline script already skips the intro here */
+@media (prefers-reduced-motion: reduce) {
+  [data-intro="play"] body::before,
+  [data-intro="play"] .hero > * {
+    animation: none;
+  }
+}

@@ -4,6 +4,19 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+        <!-- Decide on the first-visit intro before first paint, so the grid
+             never flashes in and then restarts. Once per session, and never
+             with reduced motion. -->
+        <script>
+            try {
+                if (!sessionStorage.getItem("intro-seen") &&
+                    !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                    document.documentElement.dataset.intro = "play";
+                    sessionStorage.setItem("intro-seen", "1");
+                }
+            } catch (e) {}
+        </script>
+
         <title>Ofuje — Software engineer, ML &amp; frontend</title>
         <meta name="description" content="Ofuje is a software engineer working across full-stack machine learning and frontend engineering. Projects, writing, and notes from building things.">
         <meta name="theme-color" content="#0B0D16">
@@ -27,6 +40,7 @@
         <link rel="stylesheet" href="/css/components/footer.css">
         <link rel="stylesheet" href="/css/components/hero.css">
         <link rel="stylesheet" href="/css/components/starfield.css">
+        <link rel="stylesheet" href="/css/intro.css">
     </head>
 
     <body>

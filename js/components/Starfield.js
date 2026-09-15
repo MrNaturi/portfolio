@@ -9,6 +9,11 @@ const BAND_WIDTH = 0.085;    // band spread, as a fraction of the diagonal
 const LABEL_MAGNITUDE = 0.4; // stars brighter than this get a catalogue label
 const STAR_RGB = "236, 231, 220";
 
+// First-visit intro: stars fade in brightest-first
+const INTRO_DELAY = 250;     // ms, lets the coordinate grid lead
+const INTRO_DURATION = 1100; // ms
+const INTRO_STAGGER = 0.75;  // share of the intro spent staggering by brightness
+
 // Eyepiece
 const ZOOM = 1.8;
 const FOLLOW = 0.2;          // 0–1, how quickly the lens catches the pointer
@@ -114,6 +119,11 @@ export function initStarfield() {
   let height = 0;
   let frame = 0;          // pending requestAnimationFrame id
   let visible = true;
+
+  // <html data-intro="play"> is set by an inline script in index.html on the
+  // first visit of a session (and never with reduced motion)
+  const introStart =
+    document.documentElement.dataset.intro === "play" ? performance.now() + INTRO_DELAY : null;
 
   // The lens eases toward the pointer and fades in/out, so it has its own
   // position and opacity separate from the raw pointer.
@@ -265,10 +275,25 @@ export function initStarfield() {
   function draw() {
     frame = 0;
     ctx.clearRect(0, 0, width, height);
+    // 0 → 1 across the intro; 1 immediately when there is no intro
+    const intro =
+      introStart === null
+        ? 1
+        : Math.min(1, Math.max(0, (performance.now() - introStart) / INTRO_DURATION));
+
+    ctx.globalAlpha = intro;
     drawHaze();
+    ctx.globalAlpha = 1;
 
     for (const star of stars) {
-      drawDot(star.x * width, star.y * height, star.radius, star.opacity);
+      // Each star waits its turn by brightness, then fades over the rest
+      let reveal = 1;
+      if (intro < 1) {
+        const start = (1 - star.magnitude) * INTRO_STAGGER;
+        reveal = Math.min(1, Math.max(0, (intro - start) / (1 - INTRO_STAGGER)));
+        reveal = 1 - Math.pow(1 - reveal, 3); // ease-out
+      }
+      if (reveal > 0) drawDot(star.x * width, star.y * height, star.radius, star.opacity * reveal);
     }
 
     // Step the lens toward its target. Reduced motion: snap, no easing.
@@ -290,6 +315,7 @@ export function initStarfield() {
 
     // Keep animating only while the lens is still catching up or fading
     const settling =
+      intro < 1 ||
       lens.alpha !== targetAlpha ||
       (pointer && Math.hypot(pointer.x - lens.x, pointer.y - lens.y) > 0.3);
     if (settling) requestDraw();
