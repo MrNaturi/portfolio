@@ -22,6 +22,7 @@ const EXPOSURE_MAX_SPEED = 7;    // degrees of sky rotation per second, at full 
 const EXPOSURE_RAMP = 1.2;       // seconds to reach full speed
 const EXPOSURE_MAX_ANGLE = 32;   // degrees — trails stop growing here
 const RELEASE_DURATION = 900;    // ms for trails to wind back and fade
+const COMPLETE_HOLD = 1200;      // ms the finished exposure stays up before closing on its own
 const TRAIL_SEGMENTS = 6;        // arc slices per trail, for the fading tail
 const TRAIL_OPACITY = 0.8;       // trails sit a little under the stars, so hero text stays legible
 const STILL_EXPOSURE_ANGLE = 18; // reduced motion: one finished frame at this angle
@@ -154,6 +155,7 @@ export function initStarfield() {
     releaseStart: 0,
     anchor: null,    // { x, y } where the press happened, for the readout
     pole: { x: 0, y: 0 },
+    completeAt: null, // performance.now() when trails reached full length
     groups: [],      // stars bucketed for batched drawing, built when exposing starts
   };
 
@@ -407,7 +409,9 @@ export function initStarfield() {
     const pad = (n) => String(n).padStart(2, "0");
     // Reduced motion shows a still frame, so there is no running clock to report
     const clock = reducedMotion.matches ? "" : `${pad(Math.floor(seconds / 60))}:${pad(Math.floor(seconds % 60))} · `;
-    const text = `exposure ${clock}${Math.round(angleDeg)}°`;
+    const text = exposure.completeAt
+      ? `exposure complete · ${Math.round(angleDeg)}°`
+      : `exposure ${clock}${Math.round(angleDeg)}°`;
     ctx.save();
     ctx.globalAlpha = alpha * 0.85;
     ctx.fillStyle = brass;
@@ -421,10 +425,25 @@ export function initStarfield() {
   // Advance the exposure state machine; returns true while it needs frames
   function stepExposure(now) {
     if (exposure.state === "exposing") {
-      exposure.angle = reducedMotion.matches
-        ? STILL_EXPOSURE_ANGLE
-        : exposureAngle((now - exposure.start) / 1000);
-      return !reducedMotion.matches;
+      if (reducedMotion.matches) {
+        exposure.angle = STILL_EXPOSURE_ANGLE;
+        return false;
+      }
+      exposure.angle = exposureAngle((now - exposure.start) / 1000);
+
+      // Like a real exposure, it has an end: once the trails reach full
+      // length they hold briefly, marked complete, then close on their own
+      // even if the button is still down. Otherwise the sky just freezes.
+      if (exposure.angle >= EXPOSURE_MAX_ANGLE) {
+        exposure.completeAt ??= now;
+        if (now - exposure.completeAt >= COMPLETE_HOLD) {
+          exposure.state = "releasing";
+          exposure.releaseFrom = exposure.angle;
+          exposure.releaseStart = now;
+          host.classList.remove("is-exposing");
+        }
+      }
+      return true;
     }
     if (exposure.state === "releasing") {
       const t = Math.min(1, (now - exposure.releaseStart) / RELEASE_DURATION);
@@ -537,6 +556,7 @@ export function initStarfield() {
   function beginExposure() {
     exposure.state = "exposing";
     exposure.start = performance.now();
+    exposure.completeAt = null;
     exposure.pole = polePosition();
     prepareTrails();
     host.classList.add("is-exposing");
