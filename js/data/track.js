@@ -3,6 +3,6 @@
 // Until the file exists, the player stays hidden.
 export const track = {
   src: "/assets/audio/track.mp3",
-  title: "Song title",
-  artist: "Artist",
+  title: "Sweden",
+  artist: "C418",
 };
