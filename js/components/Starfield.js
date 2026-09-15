@@ -22,7 +22,7 @@ const EXPOSURE_MAX_SPEED = 7;    // degrees of sky rotation per second, at full 
 const EXPOSURE_RAMP = 1.2;       // seconds to reach full speed
 const EXPOSURE_MAX_ANGLE = 32;   // degrees — trails stop growing here
 const RELEASE_DURATION = 900;    // ms for trails to wind back and fade
-const TRAIL_SEGMENTS = 8;        // arc slices per trail, for the fading tail
+const TRAIL_SEGMENTS = 6;        // arc slices per trail, for the fading tail
 const TRAIL_OPACITY = 0.8;       // trails sit a little under the stars, so hero text stays legible
 const STILL_EXPOSURE_ANGLE = 18; // reduced motion: one finished frame at this angle
 
@@ -154,6 +154,7 @@ export function initStarfield() {
     releaseStart: 0,
     anchor: null,    // { x, y } where the press happened, for the readout
     pole: { x: 0, y: 0 },
+    groups: [],      // stars bucketed for batched drawing, built when exposing starts
   };
 
   function polePosition() {
@@ -318,38 +319,87 @@ export function initStarfield() {
   }
 
   // Each star sweeps an arc around the pole from where it started to where
-  // it is now. The arc is split into slices that brighten toward the head,
-  // so the tail fades like a real long-exposure trail.
+  // it is now, split into slices that brighten toward the head so the tail
+  // fades like a real long-exposure trail.
+  //
+  // Drawing that star-by-star is ~2,500 separate strokes a frame. Instead,
+  // stars are grouped by brightness and line width when the exposure
+  // starts, and each (group, slice) pair becomes ONE path with every star's
+  // arc in it — about 60 strokes a frame for the same picture.
+  const TRAIL_GROUPS = 5;
+
+  function prepareTrails() {
+    const { x: px, y: py } = exposure.pole;
+    const groups = new Map();
+    for (const star of stars) {
+      const sx = star.x * width;
+      const sy = star.y * height;
+      const level = Math.min(TRAIL_GROUPS - 1, Math.floor(star.magnitude * TRAIL_GROUPS * 1.6));
+      const thick = star.radius > 1 ? 1 : 0;
+      const key = level * 2 + thick;
+      if (!groups.has(key)) {
+        groups.set(key, { opacity: 0, lineWidth: thick ? 1.6 : 0.8, dotRadius: 0, members: [] });
+      }
+      const group = groups.get(key);
+      group.members.push({
+        radius: Math.hypot(sx - px, sy - py),
+        start: Math.atan2(sy - py, sx - px),
+        dot: star.radius,
+      });
+      group.opacity += star.opacity;
+    }
+    exposure.groups = [...groups.values()].map((group) => ({
+      ...group,
+      opacity: group.opacity / group.members.length,
+    }));
+  }
+
   function drawTrails(angleDeg, fade) {
     const { x: px, y: py } = exposure.pole;
     // Northern sky turns counter-clockwise about the pole; with canvas y
     // pointing down that is a negative angle.
     const sweep = (-angleDeg * Math.PI) / 180;
+    const step = sweep / TRAIL_SEGMENTS;
 
     ctx.save();
     ctx.lineCap = "round";
-    for (const star of stars) {
-      const sx = star.x * width;
-      const sy = star.y * height;
-      const radius = Math.hypot(sx - px, sy - py);
-      const start = Math.atan2(sy - py, sx - px);
-      ctx.lineWidth = Math.max(0.6, star.radius * 1.3);
+    ctx.strokeStyle = `rgb(${STAR_RGB})`;
+    ctx.fillStyle = `rgb(${STAR_RGB})`;
+
+    for (const group of exposure.groups) {
+      ctx.lineWidth = group.lineWidth;
 
       for (let i = 0; i < TRAIL_SEGMENTS; i++) {
-        const a0 = start + (sweep * i) / TRAIL_SEGMENTS;
-        const a1 = start + (sweep * (i + 1)) / TRAIL_SEGMENTS;
         const strength = (i + 1) / TRAIL_SEGMENTS;
-        ctx.strokeStyle = `rgba(${STAR_RGB}, ${star.opacity * strength * strength * fade * TRAIL_OPACITY})`;
+        ctx.globalAlpha = group.opacity * strength * strength * fade * TRAIL_OPACITY;
         ctx.beginPath();
-        ctx.arc(px, py, radius, a0, a1, sweep < 0);
+        // Each slice is a straight chord rather than an arc: slices span at
+        // most ~4°, so even for stars 2,000px from the pole the chord sits
+        // within a pixel of the true curve, and lines rasterise far faster
+        // than large-radius arcs.
+        for (const m of group.members) {
+          const a0 = m.start + step * i;
+          const a1 = a0 + step;
+          ctx.moveTo(px + Math.cos(a0) * m.radius, py + Math.sin(a0) * m.radius);
+          ctx.lineTo(px + Math.cos(a1) * m.radius, py + Math.sin(a1) * m.radius);
+        }
         ctx.stroke();
       }
 
-      // The star itself, at the head of its trail
-      const head = start + sweep;
-      drawDot(px + Math.cos(head) * radius, py + Math.sin(head) * radius, star.radius, star.opacity);
+      // The stars themselves, at the heads of their trails
+      ctx.globalAlpha = group.opacity;
+      ctx.beginPath();
+      for (const m of group.members) {
+        const head = m.start + sweep;
+        const hx = px + Math.cos(head) * m.radius;
+        const hy = py + Math.sin(head) * m.radius;
+        ctx.moveTo(hx + m.dot, hy);
+        ctx.arc(hx, hy, m.dot, 0, Math.PI * 2);
+      }
+      ctx.fill();
     }
     ctx.restore();
+
   }
 
   function drawExposureReadout(angleDeg, seconds, alpha) {
@@ -488,6 +538,7 @@ export function initStarfield() {
     exposure.state = "exposing";
     exposure.start = performance.now();
     exposure.pole = polePosition();
+    prepareTrails();
     host.classList.add("is-exposing");
     requestDraw();
   }
