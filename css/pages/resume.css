@@ -482,3 +482,9 @@
     display: none;
   }
 }
+
+.resume-btn--quiet {
+  border-color: var(--border-hairline);
+  background: transparent;
+  color: var(--text-muted);
+}

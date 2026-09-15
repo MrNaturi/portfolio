@@ -7,6 +7,7 @@ import {
   education,
   skills,
   beyond,
+  pdf,
 } from "../../data/resume.js";
 
 // Fixed three-letter months, matching the Writing page's date column
@@ -66,7 +67,11 @@ export function ResumeIntro() {
         <p class="resume-intro__summary">${highlight(header.summary)}</p>
       </div>
       <div class="resume-intro__actions">
-        <button class="resume-btn" type="button" data-print>
+        <a class="resume-btn" href="${pdf.href}" download="${pdf.filename}">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m-3.5-3.5L8 10l3.5-3.5M3 13.5h10" /></svg>
+          Download PDF
+        </a>
+        <button class="resume-btn resume-btn--quiet" type="button" data-print>
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 6V2.5h7V6M4.5 11.5h-2v-5h11v5h-2M4.5 9.5h7v4h-7z" /></svg>
           Print
         </button>

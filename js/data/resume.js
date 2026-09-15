@@ -165,6 +165,6 @@ export const beyond = [
 ];
 
 export const pdf = {
-  href: "/assets/resume/emmanuel-dania-resume.pdf",
+  href: "/assets/resume/Emmanuel-Dania-Resume.pdf",
   filename: "Emmanuel-Dania-Resume.pdf",
 };
