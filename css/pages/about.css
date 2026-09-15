@@ -465,3 +465,95 @@
     transition: none;
   }
 }
+
+/* ---- Pronunciation button ---- */
+
+.say {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  color: var(--accent-teal);
+  background: var(--bg-void-deep);
+  border: 1px solid var(--border-hairline-strong);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color var(--duration-hover) var(--ease-hover);
+}
+
+.say svg {
+  width: 1rem;
+  height: 1rem;
+  fill: currentColor;
+}
+
+.say .say__wave {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+
+.say::before,
+.say::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  border: 1px solid var(--accent-teal);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.say.is-playing {
+  border-color: var(--accent-teal);
+}
+
+.say.is-playing::before,
+.say.is-playing::after {
+  animation: say-ring var(--duration-signal) var(--ease-out) infinite;
+}
+
+.say.is-playing::after {
+  animation-delay: 280ms;
+}
+
+@keyframes say-ring {
+  0%   { transform: scale(1);   opacity: 0.8; }
+  35%  { transform: scale(2.4); opacity: 0; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+.say:active {
+  transform: scale(0.96);
+}
+
+/* The base focus brackets are square; a round button gets a round ring */
+.say:focus-visible {
+  outline: 1.5px solid var(--accent-brass);
+  outline-offset: 4px;
+}
+
+.say:focus-visible::after {
+  content: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .say:hover {
+    border-color: var(--accent-teal);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .say.is-playing::before,
+  .say.is-playing::after {
+    animation: none;
+  }
+
+  .say:active {
+    transform: none;
+  }
+}

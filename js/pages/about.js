@@ -7,6 +7,7 @@ import {
   AboutBeyond,
   AboutOnward,
 } from "../components/about/AboutPage.js";
+import { initNameSay } from "../components/about/NameSay.js";
 
 renderShell();
 
@@ -23,3 +24,5 @@ render({
 document.querySelectorAll("main .section__index").forEach((el, i) => {
   el.textContent = String(i + 1).padStart(2, "0");
 });
+
+initNameSay();
