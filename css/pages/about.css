@@ -1,0 +1,467 @@
+/* ==========================================================================
+   About — personal, but still the observatory. Brass chrome, IM Fell voice,
+   and a few small instruments set into the text.
+   ========================================================================== */
+
+/* ---- Hero ---- */
+
+.about-hero {
+  display: grid;
+  gap: var(--space-7);
+  align-items: center;
+  padding-top: var(--space-8);
+}
+
+@media (min-width: 60rem) {
+  .about-hero {
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--space-8);
+  }
+}
+
+.about-hero__eyebrow {
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+}
+
+.about-hero__title {
+  font-size: clamp(2.75rem, 1.6rem + 4.8vw, 5.25rem);
+  line-height: var(--leading-display);
+  letter-spacing: -0.01em;
+}
+
+.about-hero__say {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-5) 0 0;
+}
+
+.about-hero__phonetic {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+}
+
+.about-hero__phonetic strong {
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+/* ---- Lens: circular photo frame with degree ticks ----
+   The card holds two faces back to back so it can flip in 3D. */
+
+.lens {
+  --lens-size: min(100%, 27rem);
+  position: relative;
+  width: var(--lens-size);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  perspective: 1400px;
+}
+
+@media (min-width: 60rem) {
+  .lens {
+    margin-right: 0;
+  }
+}
+
+.lens__ticks {
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(var(--border-hairline-strong) 0 0.4deg, transparent 0.4deg 10deg);
+  -webkit-mask: radial-gradient(circle, transparent 69%, #000 69.5%, #000 71%, transparent 71.5%);
+          mask: radial-gradient(circle, transparent 69%, #000 69.5%, #000 71%, transparent 71.5%);
+  pointer-events: none;
+}
+
+.lens__card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.lens__face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 1px solid var(--border-hairline-strong);
+  background: var(--bg-void-deep);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.lens__face--back {
+  transform: rotateY(180deg);
+}
+
+.lens__face img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The mirror shot is toned warm to sit in the brass palette; the portrait
+   on the back keeps its real colour, so turning around "develops" it */
+.lens__face--front img {
+  filter: sepia(0.5) saturate(0.75) contrast(1.06) brightness(0.9);
+}
+
+/* Inner vignette, like looking down a lens barrel */
+.lens__face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: inset 0 0 70px 24px rgba(7, 8, 16, 0.6);
+  pointer-events: none;
+}
+
+/* ---- Story ---- */
+
+.about-story__grid {
+  display: grid;
+  gap: var(--space-7);
+}
+
+@media (min-width: 64rem) {
+  .about-story__grid {
+    grid-template-columns: 1fr 17rem;
+    gap: var(--space-8);
+    align-items: start;
+  }
+}
+
+.about-story__prose {
+  max-width: 64ch;
+}
+
+.about-story__prose > p {
+  margin: 0 0 1.3em;
+  font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  line-height: 1.75;
+}
+
+.about-chip {
+  color: var(--accent-brass);
+  box-shadow: inset 0 -1px var(--accent-brass-dim);
+  transition: color var(--duration-hover) var(--ease-hover), box-shadow var(--duration-hover) var(--ease-hover);
+}
+
+.about-chip small {
+  margin-left: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.62em;
+  color: var(--accent-brass-dim);
+  vertical-align: 0.15em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .about-chip:hover {
+    color: var(--text-primary);
+    box-shadow: inset 0 -1px var(--text-primary);
+  }
+}
+
+.about-quote {
+  margin: 2em 0;
+  padding: 0;
+}
+
+.about-quote::before {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 1px;
+  margin-bottom: var(--space-4);
+  background: var(--accent-brass);
+}
+
+.about-quote p {
+  max-width: 20ch; /* in the quote's own font size */
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.875rem, 1.3rem + 2.2vw, 2.75rem);
+  line-height: 1.18;
+  color: var(--text-primary);
+  text-wrap: balance;
+}
+
+.about-facts {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-hairline);
+}
+
+@media (min-width: 64rem) {
+  .about-facts {
+    position: sticky;
+    top: var(--space-6);
+  }
+}
+
+.about-facts dl {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+}
+
+.about-facts dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+}
+
+.about-facts dd {
+  margin: 2px 0 0;
+  font-size: var(--text-small);
+}
+
+/* ---- Coordinates ---- */
+
+.about-coords {
+  scroll-margin-top: var(--space-5);
+}
+
+.about-coords__grid {
+  display: grid;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+@media (min-width: 56rem) {
+  .about-coords__grid {
+    grid-template-columns: 22rem 1fr;
+    gap: var(--space-7);
+  }
+}
+
+.about-city + .about-city {
+  margin-top: var(--space-6);
+}
+
+.about-city__name {
+  font-size: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+  line-height: 1;
+}
+
+.about-city__meaning {
+  margin: var(--space-2) 0 var(--space-4);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.375rem;
+  color: var(--text-muted);
+}
+
+.about-city__coords {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-1) var(--space-4);
+  margin: 0;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.about-city__coords dt {
+  font-size: var(--text-meta);
+  color: var(--text-faint);
+}
+
+.about-city__coords dd {
+  margin: 0;
+  font-size: var(--text-label);
+}
+
+/* ---- Currently ---- */
+
+.about-now__log {
+  display: grid;
+  gap: var(--space-5);
+  margin: 0;
+}
+
+@media (min-width: 40rem) {
+  .about-now__log {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  .about-now__log {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.about-now__log div {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-hairline);
+}
+
+.about-now__log dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-label);
+  color: var(--accent-brass-dim);
+}
+
+.about-now__log dd {
+  margin: var(--space-2) 0 0;
+  color: var(--text-muted);
+}
+
+.about-lift {
+  font-style: normal;
+  color: var(--text-primary);
+}
+
+.about-now__updated {
+  margin: var(--space-4) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+}
+
+/* ---- Beyond code ---- */
+
+.about-beyond__grid {
+  display: grid;
+  gap: var(--space-6) var(--space-6);
+}
+
+@media (min-width: 48rem) {
+  .about-beyond__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.about-card {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-hairline);
+}
+
+.about-card h3 {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-h3-large);
+}
+
+.about-card p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.about-card__label {
+  margin-top: var(--space-5) !important;
+  margin-bottom: var(--space-2) !important;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint) !important;
+}
+
+.about-card--games {
+  display: grid;
+  gap: var(--space-6);
+}
+
+@media (min-width: 48rem) {
+  .about-card--games {
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr 1.2fr;
+    gap: var(--space-7);
+  }
+}
+
+.about-playing {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-playing li {
+  padding: 3px var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-primary);
+  border: 1px solid var(--border-hairline);
+}
+
+.about-memory {
+  padding-left: var(--space-5);
+  border-left: 1px solid var(--accent-brass);
+}
+
+.about-memory .about-card__label {
+  margin-top: 0 !important;
+}
+
+.about-memory p:not(.about-card__label) {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--text-primary);
+}
+
+.about-card__link {
+  display: inline-block;
+  margin-top: var(--space-3);
+  padding-block: var(--space-1);
+  color: var(--accent-brass);
+  box-shadow: inset 0 -1px var(--accent-brass-dim);
+  transition: color var(--duration-hover) var(--ease-hover);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .about-card__link:hover {
+    color: var(--text-primary);
+  }
+}
+
+/* ---- Onward ---- */
+
+.about-onward {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-6);
+  padding-bottom: var(--space-8);
+}
+
+.about-onward a {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.625rem, 1.3rem + 1.2vw, 2.125rem);
+  color: var(--text-primary);
+  background-image: linear-gradient(var(--accent-brass), var(--accent-brass));
+  background-repeat: no-repeat;
+  background-position: 0 95%;
+  background-size: 100% 1px;
+  transition: color var(--duration-hover) var(--ease-hover), background-size 350ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .about-onward a:hover {
+    color: var(--accent-brass);
+    background-size: 30% 1px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-chip,
+  .about-card__link,
+  .about-onward a {
+    transition: none;
+  }
+}
