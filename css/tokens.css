@@ -58,8 +58,13 @@
   --content-max-width: 720px;
 
   /* ---- Typography: families ---- */
-  --font-display: 'Fraunces', serif;  /* headlines, plate titles, section heads */
-  --font-body: 'Karla', sans-serif;   /* body copy, nav, labels, meta */
+  --font-display: 'IM Fell English', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+                                      /* headlines, plate titles, section heads —
+                                         digitised 17th-c. type, the engraved star-atlas voice */
+  --font-body: 'Karla', 'Helvetica Neue', Arial, sans-serif; /* body copy, nav */
+  --font-mono: 'Martian Mono', ui-monospace, 'Cascadia Mono', Menlo, monospace;
+                                      /* serials, coordinates, meta labels —
+                                         the engraved numerals on the instrument */
 
   /* ---- Typography: sizes (unchanged from the locked Home pass) ---- */
   --text-hero-desktop: 52px;
@@ -75,8 +80,7 @@
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
-  --weight-display: 450;       /* Fraunces' optical-size-friendly default weight —
-                                   doesn't map cleanly to the 400/500/600 scale above */
+  --weight-display: 400;       /* IM Fell English ships a single weight (plus italic) */
 
   /* ---- Typography: line-height (unchanged) ---- */
   --leading-tight: 1.25;
