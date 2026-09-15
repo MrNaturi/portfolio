@@ -303,6 +303,7 @@
 
   .case-table tbody th {
     grid-column: 1 / -1;
+    min-width: 0;
     font-weight: var(--weight-medium); /* Karla, not IM Fell: its old-style
                                           figures turn "P90" into "P9o" */
   }
@@ -653,6 +654,82 @@
 .case-findings__item p {
   margin: 0;
   color: var(--text-muted);
+}
+
+/* ---- Engineering ---- */
+
+.case-eng__headline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-4);
+  max-width: 48rem;
+  margin: 0 0 var(--space-6);
+  color: var(--text-muted);
+}
+
+.case-eng__count {
+  font-family: var(--font-mono);
+  font-size: clamp(2.5rem, 1.8rem + 2.6vw, 3.75rem);
+  line-height: 1;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.case-eng__strategies {
+  display: grid;
+  gap: var(--space-5);
+  margin: 0 0 var(--space-7);
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 48rem) {
+  .case-eng__strategies {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-5) var(--space-6);
+  }
+}
+
+.case-eng__strategies li {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-hairline);
+}
+
+.case-eng__strategies h3 {
+  margin-bottom: var(--space-1);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+}
+
+.case-eng__strategies code,
+.case-note code {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  color: var(--accent-brass-dim);
+}
+
+.case-eng__strategies p {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
+.case-eng__subhead {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-h3);
+}
+
+.case-table__unit {
+  display: block;
+  color: var(--text-faint);
+  opacity: 0.8;
+}
+
+.case-table--perf tbody th {
+  white-space: normal;
+  min-width: 16rem;
 }
 
 /* ---- Where next ---- */

@@ -1,7 +1,7 @@
 import { render, renderShell } from "./shell.js";
 import { initMotionMarks } from "../components/MotionMark.js";
 import { initLiveConsole } from "../components/case-study/LiveConsole.js";
-import { CaseHero, CaseResults, CaseArchitecture, CaseLive, CaseFindings, CaseNext } from "../components/case-study/TriageCase.js";
+import { CaseHero, CaseResults, CaseArchitecture, CaseLive, CaseFindings, CaseEngineering, CaseNext } from "../components/case-study/TriageCase.js";
 
 renderShell();
 
@@ -11,6 +11,7 @@ render({
   "case-arch-root": CaseArchitecture,
   "case-live-root": CaseLive,
   "case-findings-root": CaseFindings,
+  "case-eng-root": CaseEngineering,
   "case-next-root": CaseNext,
 });
 

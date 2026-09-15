@@ -231,6 +231,62 @@ export function CaseFindings() {
   `;
 }
 
+export function CaseEngineering() {
+  const { testing, performance } = data;
+  return `
+    <section class="section case-eng" aria-labelledby="eng-title">
+      ${sectionHead("Engineering", "eng-title")}
+
+      <div class="case-eng__tests">
+        <p class="case-eng__headline">
+          <span class="case-eng__count">41</span>
+          <span>tests, four strategies, passing on a Windows laptop, Colab Linux and a container</span>
+        </p>
+        <ul class="case-eng__strategies">
+          ${testing.strategies
+            .map(
+              (t) => `
+            <li>
+              <h3>${t.name}</h3>
+              <code>${t.where}</code>
+              <p>${t.covers}</p>
+            </li>`
+            )
+            .join("")}
+        </ul>
+      </div>
+
+      <h3 class="case-eng__subhead" id="perf-caption">Performance across environments</h3>
+      <div class="case-table-wrap" tabindex="0" role="region" aria-labelledby="perf-caption">
+        <table class="case-table case-table--perf">
+          <thead>
+            <tr>
+              <th scope="col">Environment</th>
+              <th scope="col">Simulation <span class="case-table__unit">steps/s</span></th>
+              <th scope="col">Inference <span class="case-table__unit">mean ms</span></th>
+              <th scope="col">API /prioritize <span class="case-table__unit">ms</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            ${performance
+              .map(
+                (row) => `
+              <tr>
+                <th scope="row">${row.env}</th>
+                <td data-label="Simulation, steps/s">${row.sim}</td>
+                <td data-label="Inference, mean ms">${row.inference}</td>
+                <td data-label="API /prioritize, ms">${row.api}</td>
+              </tr>`
+              )
+              .join("")}
+          </tbody>
+        </table>
+      </div>
+      <p class="case-note">Measured with <code>scripts/benchmark.py</code>. The Render deployment was verified live through its <code>/docs</code> endpoint.</p>
+    </section>
+  `;
+}
+
 export function CaseNext() {
   return `
     <section class="section case-next" aria-labelledby="next-title">
