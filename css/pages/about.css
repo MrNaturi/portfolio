@@ -871,3 +871,87 @@
     transition: none;
   }
 }
+
+/* ---- Guitar ---- */
+
+.about-strum,
+.about-play-sweden {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.75rem;
+  margin-top: var(--space-4);
+  padding: 0 var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--accent-brass);
+  background: var(--bg-void-deep);
+  border: 1px solid var(--border-hairline-strong);
+  border-radius: var(--radius-control);
+  cursor: pointer;
+  transition: color var(--duration-hover) var(--ease-hover), border-color var(--duration-hover) var(--ease-hover);
+}
+
+.about-strum:active,
+.about-play-sweden:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .about-strum:hover,
+  .about-play-sweden:hover {
+    color: var(--text-primary);
+    border-color: var(--accent-brass);
+  }
+}
+
+.about-strings {
+  display: grid;
+  gap: 7px;
+  margin-top: var(--space-4);
+  padding-block: var(--space-1);
+}
+
+.about-strings span {
+  display: block;
+  height: 1px;
+  background: var(--border-hairline-strong);
+  transform-origin: center;
+}
+
+/* Heavier strings drawn a little thicker, lowest at the bottom */
+.about-strings span:nth-child(1) { height: 2px; order: 6; }
+.about-strings span:nth-child(2) { height: 1.5px; order: 5; }
+.about-strings span:nth-child(3) { height: 1.5px; order: 4; }
+.about-strings span:nth-child(4) { order: 3; }
+.about-strings span:nth-child(5) { order: 2; }
+.about-strings span:nth-child(6) { order: 1; }
+
+.about-strings span.is-ringing {
+  background: var(--accent-brass);
+  animation: string-ring 900ms var(--ease-out) forwards;
+}
+
+@keyframes string-ring {
+  0%   { transform: translateY(0) scaleY(1); }
+  10%  { transform: translateY(-1.5px) scaleY(1.8); }
+  20%  { transform: translateY(1.5px) scaleY(1.8); }
+  30%  { transform: translateY(-1px) scaleY(1.4); }
+  40%  { transform: translateY(1px) scaleY(1.4); }
+  55%  { transform: translateY(-0.5px); }
+  70%  { transform: translateY(0.5px); }
+  100% { transform: none; background: var(--border-hairline-strong); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-strings span.is-ringing {
+    animation: none;
+    background: var(--border-hairline-strong);
+  }
+
+  .about-strum:active,
+  .about-play-sweden:active {
+    transform: none;
+  }
+}

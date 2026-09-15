@@ -11,6 +11,7 @@ import { initNameSay } from "../components/about/NameSay.js";
 import { initLensFlip } from "../components/about/LensFlip.js";
 import { initCuriosityPipeline } from "../components/about/CuriosityPipeline.js";
 import { initCoordinates } from "../components/about/Coordinates.js";
+import { initGuitar } from "../components/about/Guitar.js";
 
 renderShell();
 
@@ -32,3 +33,4 @@ initNameSay();
 initLensFlip();
 initCuriosityPipeline();
 initCoordinates();
+initGuitar();
