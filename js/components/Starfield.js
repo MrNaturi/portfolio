@@ -14,6 +14,16 @@ const INTRO_DELAY = 250;     // ms, lets the coordinate grid lead
 const INTRO_DURATION = 1100; // ms
 const INTRO_STAGGER = 0.75;  // share of the intro spent staggering by brightness
 
+// Long exposure (press and hold)
+const HOLD_DELAY = 180;          // ms before a press becomes an exposure
+const EXPOSURE_MAX_SPEED = 7;    // degrees of sky rotation per second, at full speed
+const EXPOSURE_RAMP = 1.2;       // seconds to reach full speed
+const EXPOSURE_MAX_ANGLE = 32;   // degrees — trails stop growing here
+const RELEASE_DURATION = 900;    // ms for trails to wind back and fade
+const TRAIL_SEGMENTS = 8;        // arc slices per trail, for the fading tail
+const TRAIL_OPACITY = 0.8;       // trails sit a little under the stars, so hero text stays legible
+const STILL_EXPOSURE_ANGLE = 18; // reduced motion: one finished frame at this angle
+
 // Eyepiece
 const ZOOM = 1.8;
 const FOLLOW = 0.2;          // 0–1, how quickly the lens catches the pointer
@@ -129,6 +139,25 @@ export function initStarfield() {
   // position and opacity separate from the raw pointer.
   let pointer = null;     // { x, y } in CSS pixels, or null when away
   const lens = { x: 0, y: 0, alpha: 0 };
+
+  // Exposure state. Stars rotate about the celestial pole, which sits at the
+  // same point the page grid is projected from (50% across, 55vh above the
+  // top of the viewport — see css/atmosphere.css), converted to canvas space.
+  const exposure = {
+    state: "idle",   // idle | armed | exposing | releasing
+    timer: 0,
+    start: 0,        // performance.now() when exposing began
+    angle: 0,        // current rotation, degrees
+    releaseFrom: 0,  // angle at the moment of release
+    releaseStart: 0,
+    anchor: null,    // { x, y } where the press happened, for the readout
+    pole: { x: 0, y: 0 },
+  };
+
+  function polePosition() {
+    const rect = canvas.getBoundingClientRect();
+    return { x: window.innerWidth / 2 - rect.left, y: -0.55 * window.innerHeight - rect.top };
+  }
 
   function lensRadius() {
     return Math.max(64, Math.min(110, width * 0.075));
@@ -272,8 +301,94 @@ export function initStarfield() {
     ctx.restore();
   }
 
+  // Integrated rotation for a hold of t seconds: speed ramps in with a
+  // quadratic ease, then runs at full speed, capped at the maximum angle.
+  function exposureAngle(t) {
+    const ramp = EXPOSURE_RAMP;
+    const angle =
+      t < ramp
+        ? (EXPOSURE_MAX_SPEED * t * t) / (2 * ramp)
+        : (EXPOSURE_MAX_SPEED * ramp) / 2 + EXPOSURE_MAX_SPEED * (t - ramp);
+    return Math.min(EXPOSURE_MAX_ANGLE, angle);
+  }
+
+  // Each star sweeps an arc around the pole from where it started to where
+  // it is now. The arc is split into slices that brighten toward the head,
+  // so the tail fades like a real long-exposure trail.
+  function drawTrails(angleDeg, fade) {
+    const { x: px, y: py } = exposure.pole;
+    // Northern sky turns counter-clockwise about the pole; with canvas y
+    // pointing down that is a negative angle.
+    const sweep = (-angleDeg * Math.PI) / 180;
+
+    ctx.save();
+    ctx.lineCap = "round";
+    for (const star of stars) {
+      const sx = star.x * width;
+      const sy = star.y * height;
+      const radius = Math.hypot(sx - px, sy - py);
+      const start = Math.atan2(sy - py, sx - px);
+      ctx.lineWidth = Math.max(0.6, star.radius * 1.3);
+
+      for (let i = 0; i < TRAIL_SEGMENTS; i++) {
+        const a0 = start + (sweep * i) / TRAIL_SEGMENTS;
+        const a1 = start + (sweep * (i + 1)) / TRAIL_SEGMENTS;
+        const strength = (i + 1) / TRAIL_SEGMENTS;
+        ctx.strokeStyle = `rgba(${STAR_RGB}, ${star.opacity * strength * strength * fade * TRAIL_OPACITY})`;
+        ctx.beginPath();
+        ctx.arc(px, py, radius, a0, a1, sweep < 0);
+        ctx.stroke();
+      }
+
+      // The star itself, at the head of its trail
+      const head = start + sweep;
+      drawDot(px + Math.cos(head) * radius, py + Math.sin(head) * radius, star.radius, star.opacity);
+    }
+    ctx.restore();
+  }
+
+  function drawExposureReadout(angleDeg, seconds, alpha) {
+    if (!exposure.anchor) return;
+    const pad = (n) => String(n).padStart(2, "0");
+    // Reduced motion shows a still frame, so there is no running clock to report
+    const clock = reducedMotion.matches ? "" : `${pad(Math.floor(seconds / 60))}:${pad(Math.floor(seconds % 60))} · `;
+    const text = `exposure ${clock}${Math.round(angleDeg)}°`;
+    ctx.save();
+    ctx.globalAlpha = alpha * 0.85;
+    ctx.fillStyle = brass;
+    ctx.font = `400 10px ${monoFont}`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    ctx.fillText(text, exposure.anchor.x, exposure.anchor.y + 20);
+    ctx.restore();
+  }
+
+  // Advance the exposure state machine; returns true while it needs frames
+  function stepExposure(now) {
+    if (exposure.state === "exposing") {
+      exposure.angle = reducedMotion.matches
+        ? STILL_EXPOSURE_ANGLE
+        : exposureAngle((now - exposure.start) / 1000);
+      return !reducedMotion.matches;
+    }
+    if (exposure.state === "releasing") {
+      const t = Math.min(1, (now - exposure.releaseStart) / RELEASE_DURATION);
+      const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; // in-out cubic
+      exposure.angle = exposure.releaseFrom * (1 - eased);
+      if (t >= 1) {
+        exposure.state = "idle";
+        exposure.angle = 0;
+        return false;
+      }
+      return true;
+    }
+    return false;
+  }
+
   function draw() {
     frame = 0;
+    const now = performance.now();
+    const exposureRunning = stepExposure(now);
     ctx.clearRect(0, 0, width, height);
     // 0 → 1 across the intro; 1 immediately when there is no intro
     const intro =
@@ -285,7 +400,20 @@ export function initStarfield() {
     drawHaze();
     ctx.globalAlpha = 1;
 
-    for (const star of stars) {
+    const trailing = exposure.angle > 0.05;
+    if (trailing) {
+      const fade =
+        exposure.state === "releasing"
+          ? 1 - Math.min(1, (now - exposure.releaseStart) / RELEASE_DURATION)
+          : 1;
+      drawTrails(exposure.angle, fade);
+      if (exposure.state === "exposing") {
+        const seconds = reducedMotion.matches ? 0 : (now - exposure.start) / 1000;
+        drawExposureReadout(exposure.angle, seconds, 1);
+      }
+    }
+
+    if (!trailing) for (const star of stars) {
       // Each star waits its turn by brightness, then fades over the rest
       let reveal = 1;
       if (intro < 1) {
@@ -298,7 +426,8 @@ export function initStarfield() {
 
     // Step the lens toward its target. Reduced motion: snap, no easing.
     const instant = reducedMotion.matches;
-    const targetAlpha = pointer ? 1 : 0;
+    // The lens steps aside while an exposure is running
+    const targetAlpha = pointer && exposure.state === "idle" ? 1 : 0;
     if (pointer) {
       if (instant || lens.alpha === 0) {
         lens.x = pointer.x;
@@ -316,6 +445,7 @@ export function initStarfield() {
     // Keep animating only while the lens is still catching up or fading
     const settling =
       intro < 1 ||
+      exposureRunning ||
       lens.alpha !== targetAlpha ||
       (pointer && Math.hypot(pointer.x - lens.x, pointer.y - lens.y) > 0.3);
     if (settling) requestDraw();
@@ -345,6 +475,50 @@ export function initStarfield() {
     pointer = null;
     requestDraw();
   }
+
+  // ---- Press and hold → long exposure ----
+  function beginExposure() {
+    exposure.state = "exposing";
+    exposure.start = performance.now();
+    exposure.pole = polePosition();
+    host.classList.add("is-exposing");
+    requestDraw();
+  }
+
+  function armExposure(event) {
+    if (event.button !== 0 || event.target.closest(TEXT)) return;
+    event.preventDefault(); // a press on open sky shouldn't start a text drag-select
+    const rect = canvas.getBoundingClientRect();
+    exposure.anchor = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+    exposure.state = "armed";
+    clearTimeout(exposure.timer);
+    exposure.timer = setTimeout(beginExposure, HOLD_DELAY);
+  }
+
+  function endExposure() {
+    clearTimeout(exposure.timer);
+    host.classList.remove("is-exposing");
+    if (exposure.state === "exposing") {
+      if (reducedMotion.matches) {
+        exposure.state = "idle";
+        exposure.angle = 0;
+      } else {
+        exposure.state = "releasing";
+        exposure.releaseFrom = exposure.angle;
+        exposure.releaseStart = performance.now();
+      }
+      requestDraw();
+    } else if (exposure.state === "armed") {
+      exposure.state = "idle";
+    }
+  }
+
+  host.addEventListener("pointerdown", (event) => {
+    if (event.pointerType !== "touch") armExposure(event);
+  });
+  // Listen on window so releasing outside the hero still ends the exposure
+  window.addEventListener("pointerup", endExposure);
+  window.addEventListener("blur", endExposure);
 
   // Mouse/pen: lens follows while hovering. Touch: lens shows while a
   // finger is down and disappears on lift or when the page starts scrolling.

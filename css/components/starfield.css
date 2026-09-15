@@ -17,3 +17,9 @@
     cursor: auto; /* the lens steps aside over text, so the cursor does too */
   }
 }
+
+/* While a long exposure runs, stop the press from starting a text selection */
+.hero.is-exposing {
+  user-select: none;
+  -webkit-user-select: none;
+}
