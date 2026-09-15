@@ -39,7 +39,7 @@ export const flagships = [
     status: "Shipped prototype",
     results: [
       { value: "3", label: "languages" },
-      { value: "2-way", label: "speech ⇄ text" },
+      { value: "2-way", label: "speech and text" },
     ],
     resultsNote: "Yoruba · Igbo · Hausa",
     links: [
