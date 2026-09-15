@@ -1,0 +1,110 @@
+/* ==========================================================================
+   Writing preview — deliberately unlike the project plates: an open
+   logbook of essays. Dated entries on brass hairlines, titles in IM Fell
+   italic, no surfaces, no chrome.
+   ========================================================================== */
+
+.writing-preview__intro {
+  max-width: 44ch;
+  margin: 0 0 var(--space-5);
+  color: var(--text-muted);
+}
+
+.writing-preview__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--border-hairline);
+}
+
+.writing-preview__item {
+  position: relative; /* anchor for the stretched title link */
+  display: grid;
+  gap: var(--space-2) var(--space-6);
+  padding-block: var(--space-5);
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+@media (min-width: 48rem) {
+  .writing-preview__item {
+    grid-template-columns: 9rem 1fr;
+    align-items: baseline;
+  }
+}
+
+.writing-preview__date {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.writing-preview__title {
+  font-size: clamp(1.5rem, 1.2rem + 1.3vw, 2.25rem);
+  font-style: italic;
+  line-height: 1.15;
+}
+
+.writing-preview__title a {
+  color: var(--text-primary);
+  background-image: linear-gradient(var(--accent-brass), var(--accent-brass));
+  background-repeat: no-repeat;
+  background-position: 0 92%;
+  background-size: 0 1px;
+  transition:
+    color var(--duration-hover) var(--ease-hover),
+    background-size 350ms var(--ease-out);
+}
+
+/* The whole row is the click target; the link text stays the accessible name */
+.writing-preview__title a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.writing-preview__summary {
+  max-width: 56ch;
+  margin: var(--space-2) 0 0;
+  color: var(--text-muted);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .writing-preview__item:hover .writing-preview__title a {
+    color: var(--accent-brass);
+    background-size: 100% 1px;
+  }
+
+  .writing-preview__item:hover .writing-preview__date {
+    color: var(--accent-brass-dim);
+  }
+}
+
+.writing-preview__all {
+  display: inline-block;
+  margin-top: var(--space-6);
+  padding-block: var(--space-1);
+  color: var(--text-primary);
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 1px;
+  transition:
+    color var(--duration-hover) var(--ease-hover),
+    background-size var(--duration-hover) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .writing-preview__all:hover {
+    color: var(--accent-brass);
+    background-size: 40% 1px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .writing-preview__title a,
+  .writing-preview__all {
+    transition: none;
+  }
+}

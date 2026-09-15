@@ -2,6 +2,7 @@ import { Nav } from "../components/Nav.js";
 import { Hero } from "../components/Hero.js";
 import { AboutTeaser } from "../components/AboutTeaser.js";
 import { SelectedWork, initSelectedWork } from "../components/SelectedWork.js";
+import { WritingPreview } from "../components/WritingPreview.js";
 import { Footer } from "../components/Footer.js";
 import { initStarfield } from "../components/Starfield.js";
 import { initObservationLog } from "../components/ObservationLog.js";
@@ -12,6 +13,7 @@ const sections = {
   "hero-root": Hero,
   "about-root": AboutTeaser,
   "work-root": SelectedWork,
+  "writing-root": WritingPreview,
   "footer-root": Footer,
 };
 
