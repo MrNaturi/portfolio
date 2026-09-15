@@ -560,6 +560,7 @@ export function initStarfield() {
     exposure.pole = polePosition();
     prepareTrails();
     host.classList.add("is-exposing");
+    host.dispatchEvent(new CustomEvent("exposurestart"));
     requestDraw();
   }
 
