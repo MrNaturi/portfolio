@@ -35,13 +35,14 @@
 
 .about-hero__say {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: var(--space-3);
   margin: var(--space-5) 0 0;
 }
 
 .about-hero__phonetic {
+  flex: 1;
+  min-width: 0; /* wrap beside the button rather than dropping below it */
   font-family: var(--font-mono);
   font-size: var(--text-label);
   letter-spacing: var(--tracking-label);
