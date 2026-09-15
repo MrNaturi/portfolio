@@ -16,8 +16,12 @@ export function Nav(currentPath) {
       <ul class="nav-links">
         ${links
           .map((link) => {
-            const isCurrent = normalizePath(link.href) === current;
-            return `<li><a href="${link.href}"${isCurrent ? ' aria-current="page"' : ""}>${link.label}</a></li>`;
+            // Exact page → aria-current="page"; a sub-page of the section
+            // (/projects/triagerl) → aria-current="true". Both are styled alike.
+            const href = normalizePath(link.href);
+            const attr =
+              current === href ? ' aria-current="page"' : current.startsWith(`${href}/`) ? ' aria-current="true"' : "";
+            return `<li><a href="${link.href}"${attr}>${link.label}</a></li>`;
           })
           .join("")}
       </ul>

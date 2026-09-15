@@ -45,7 +45,7 @@
 
 /* Current page: brass text plus a fixed hairline underline, so it reads
    as "you are here" rather than a stuck hover. */
-.nav-links a[aria-current="page"] {
+.nav-links a[aria-current] {
   color: var(--accent-brass);
   background-size: 100% 1px;
 }

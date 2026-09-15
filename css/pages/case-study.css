@@ -1,0 +1,438 @@
+/* ==========================================================================
+   Case study — a long-form page for a single project.
+   The project's accent (ember for TriageRL) marks what the data supports:
+   significant results, the delivered figure, the primary action.
+   ========================================================================== */
+
+.case-study {
+  --case-accent: var(--accent-ember);
+  --plate-accent: var(--accent-ember); /* motion mark colour */
+  --plate-glow-tight: var(--glow-ember-tight);
+}
+
+/* ---- Hero ---- */
+
+.case-hero {
+  padding-top: var(--space-7);
+}
+
+.case-hero__crumbs {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-7);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+}
+
+.case-hero__crumbs a {
+  color: var(--text-muted);
+  transition: color var(--duration-hover) var(--ease-hover);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .case-hero__crumbs a:hover {
+    color: var(--accent-brass);
+  }
+}
+
+.case-hero__title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.case-hero__serial {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+}
+
+.case-hero__title {
+  font-size: clamp(3rem, 1.6rem + 7vw, 7rem);
+  line-height: 0.95;
+  letter-spacing: -0.015em;
+}
+
+.case-hero__subtitle {
+  max-width: 24ch;
+  margin: var(--space-3) 0 var(--space-5);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+  line-height: 1.15;
+  color: var(--case-accent);
+  text-wrap: balance;
+}
+
+.case-hero__summary {
+  max-width: 62ch;
+  margin: 0 0 var(--space-6);
+  font-size: clamp(var(--text-body), 0.95rem + 0.25vw, 1.125rem);
+  color: var(--text-muted);
+}
+
+.case-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-7);
+  padding: 0;
+  list-style: none;
+}
+
+/* Flat, bordered controls: small radius only, per the system */
+.case-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 var(--space-4);
+  font-size: var(--text-small);
+  color: var(--text-primary);
+  border: 1px solid var(--border-hairline-strong);
+  border-radius: var(--radius-control);
+  transition:
+    color var(--duration-hover) var(--ease-hover),
+    border-color var(--duration-hover) var(--ease-hover),
+    background-color var(--duration-hover) var(--ease-hover);
+}
+
+.case-button--primary {
+  color: var(--bg-base);
+  background: var(--case-accent);
+  border-color: var(--case-accent);
+}
+
+.case-button:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .case-button:hover {
+    border-color: var(--accent-brass);
+    color: var(--accent-brass);
+  }
+
+  .case-button--primary:hover {
+    color: var(--bg-base);
+    background: var(--text-primary);
+    border-color: var(--text-primary);
+  }
+}
+
+/* Delivered vs target: the number the project was judged on */
+.case-hero__target {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-4) var(--space-7);
+  margin: 0;
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-hairline);
+}
+
+.case-hero__target div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-1);
+}
+
+.case-hero__target dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+}
+
+.case-hero__target dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.case-hero__target .case-hero__target-value {
+  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem);
+  line-height: 1;
+  color: var(--case-accent);
+}
+
+/* ---- Shared prose ---- */
+
+.case-lede {
+  max-width: 60ch;
+  margin: 0 0 var(--space-5);
+  color: var(--text-muted);
+}
+
+.case-note {
+  max-width: 72ch;
+  margin: var(--space-4) 0 0;
+  font-size: var(--text-small);
+  color: var(--text-faint);
+}
+
+/* ---- Tables ---- */
+
+.case-table-wrap {
+  position: relative; /* contain visually-hidden cells, which are absolutely
+                         positioned and would otherwise widen the page */
+  overflow-x: auto;
+  border-top: 1px solid var(--border-hairline-strong);
+  border-bottom: 1px solid var(--border-hairline-strong);
+}
+
+.case-table-wrap:focus-visible {
+  outline: 1.5px solid var(--accent-brass);
+  outline-offset: 4px;
+}
+
+.case-table-wrap:focus-visible::after {
+  content: none;
+}
+
+.case-table {
+  width: 100%;
+  min-width: 40rem;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.case-table th,
+.case-table td {
+  padding: var(--space-3) var(--space-3);
+  text-align: right;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.case-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.case-table th:first-child {
+  padding-left: 0;
+  text-align: left;
+}
+
+.case-table th:last-child,
+.case-table td:last-child {
+  padding-right: 0;
+}
+
+.case-table thead th {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+}
+
+.case-table tbody th {
+  font-weight: var(--weight-regular);
+  color: var(--text-primary);
+}
+
+.case-table td {
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
+.case-table .is-significant .case-table__change {
+  color: var(--case-accent);
+  font-weight: var(--weight-medium);
+}
+
+.case-table .is-not-significant .case-table__change,
+.case-table .is-not-significant .case-table__p {
+  color: var(--text-faint);
+}
+
+/* Phones: a five-column table would hide its most important columns
+   off-screen, so each row becomes a small block of labelled values */
+@media (max-width: 40rem) {
+  .case-table-wrap {
+    overflow-x: visible;
+  }
+
+  .case-table {
+    min-width: 0;
+  }
+
+  .case-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .case-table,
+  .case-table tbody,
+  .case-table tr {
+    display: block;
+  }
+
+  .case-table tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2) var(--space-4);
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .case-table tbody tr:last-child {
+    border-bottom: 0;
+  }
+
+  .case-table th,
+  .case-table td {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0;
+    text-align: left;
+    border: 0;
+  }
+
+  .case-table tbody th {
+    grid-column: 1 / -1;
+    font-weight: var(--weight-medium); /* Karla, not IM Fell: its old-style
+                                          figures turn "P90" into "P9o" */
+  }
+
+  .case-table td::before {
+    content: attr(data-label);
+    font-size: var(--text-meta);
+    letter-spacing: var(--tracking-label);
+    color: var(--text-faint);
+  }
+}
+
+/* Key for the accent colour, drawn like a table cell's change value */
+.case-key {
+  display: inline-block;
+  width: 0.6em;
+  height: 0.6em;
+  margin-right: var(--space-1);
+  background: var(--case-accent);
+  vertical-align: 0.05em;
+}
+
+/* ---- Findings ---- */
+
+.case-findings__list {
+  display: grid;
+  gap: var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 56rem) {
+  .case-findings__list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+  }
+}
+
+.case-findings__item {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-hairline);
+}
+
+.case-findings__n {
+  display: block;
+  margin-bottom: var(--space-3);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--accent-brass);
+}
+
+.case-findings__item h3 {
+  margin-bottom: var(--space-3);
+  font-size: var(--text-h3);
+  line-height: 1.2;
+}
+
+.case-findings__item p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+/* ---- Where next ---- */
+
+.case-next__list {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 62ch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: next;
+}
+
+.case-next__list li {
+  position: relative;
+  padding-left: var(--space-6);
+  color: var(--text-muted);
+  counter-increment: next;
+}
+
+.case-next__list li::before {
+  content: counter(next, lower-roman) ".";
+  position: absolute;
+  left: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: 2;
+  color: var(--accent-brass-dim);
+}
+
+.case-disclaimer {
+  margin: var(--space-6) 0 var(--space-5);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+}
+
+.case-back {
+  display: inline-block;
+  padding-block: var(--space-1);
+  color: var(--text-primary);
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 1px;
+  transition:
+    color var(--duration-hover) var(--ease-hover),
+    background-size var(--duration-hover) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .case-back:hover {
+    color: var(--accent-brass);
+    background-size: 40% 1px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-button,
+  .case-back,
+  .case-hero__crumbs a {
+    transition: none;
+  }
+
+  .case-button:active {
+    transform: none;
+  }
+}
