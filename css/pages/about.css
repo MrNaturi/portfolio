@@ -631,3 +631,96 @@
     opacity: 1;
   }
 }
+
+/* ---- Curiosity pipeline ---- */
+
+.about-run {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0 0.35em;
+  padding: 1px 8px;
+  font-family: var(--font-mono);
+  font-size: 0.68em;
+  letter-spacing: var(--tracking-label);
+  line-height: 1.6;
+  color: var(--accent-brass);
+  vertical-align: 0.12em;
+  background: var(--bg-void-deep);
+  border: 1px solid var(--border-hairline-strong);
+  border-radius: var(--radius-control);
+  cursor: pointer;
+  transition: color var(--duration-hover) var(--ease-hover), border-color var(--duration-hover) var(--ease-hover);
+}
+
+.about-run:disabled {
+  color: var(--text-faint);
+  cursor: progress;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .about-run:not(:disabled):hover {
+    color: var(--text-primary);
+    border-color: var(--accent-brass);
+  }
+}
+
+/* Keep the page from jumping as log lines arrive: a line at a time, the
+   block grows downward from its first line */
+.about-log {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 1.3em;
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: 1.9;
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+  background: var(--bg-void-deep);
+  border-left: 1px solid var(--accent-brass);
+  overflow-x: auto;
+}
+
+.about-log__line {
+  white-space: pre;
+  animation: log-in 180ms var(--ease-out) both;
+}
+
+.about-log__prompt {
+  color: var(--accent-brass);
+}
+
+.about-log__dots {
+  color: var(--border-hairline-strong);
+}
+
+.about-log__line--done {
+  color: var(--accent-teal);
+}
+
+@keyframes log-in {
+  from { opacity: 0; transform: translateY(3px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.about-quote__caret {
+  display: inline-block;
+  width: 0.08em;
+  height: 0.9em;
+  margin-left: 0.04em;
+  background: var(--accent-brass);
+  vertical-align: -0.05em;
+  animation: caret 800ms steps(1) infinite;
+}
+
+@keyframes caret {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-log__line,
+  .about-quote__caret {
+    animation: none;
+  }
+}

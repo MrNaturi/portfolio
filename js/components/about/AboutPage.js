@@ -52,10 +52,10 @@ const storyToken = {
 function StoryBlock(block) {
   if (typeof block === "object") {
     return `
+      <div class="about-log" data-log hidden></div>
       <blockquote class="about-quote" data-quote>
         <p>${block.quote}</p>
       </blockquote>
-      <div class="about-log" data-log hidden></div>
     `;
   }
   return `<p>${block.replace(/\{(\w+)\}/g, (_, key) => storyToken[key] ?? key)}</p>`;
